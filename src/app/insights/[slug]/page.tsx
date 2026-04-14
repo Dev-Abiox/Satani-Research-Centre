@@ -134,7 +134,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Content below image — same width as image */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+      <div className="max-w-[800px] mx-auto px-6 sm:px-10 lg:px-16">
         {/* Category label */}
         <p className="text-[20px] sm:text-[22px] text-neutral-400 font-light mb-1">
           Featured News
@@ -152,8 +152,8 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Article body */}
-      <article className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pb-12">
-        <div className="max-w-[720px] text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
+      <article className="max-w-[800px] mx-auto px-6 sm:px-10 lg:px-16 pb-12">
+        <div className="text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
           {article.content.map((block: ContentBlock, index: number) => {
             if (block.type === "heading") {
               return (
