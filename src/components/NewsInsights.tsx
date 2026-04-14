@@ -219,7 +219,12 @@ export default function NewsInsights() {
           ref={scrollRef}
           onScroll={checkScroll}
           className="flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto scrollbar-hide pr-4 sm:pr-6 md:pr-8 lg:pr-10"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehaviorX: "contain",
+          }}
         >
           {articles.map((article) => (
             <SmallCard key={article.title} {...article} />

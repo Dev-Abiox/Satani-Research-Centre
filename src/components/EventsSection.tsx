@@ -417,7 +417,12 @@ export default function EventsSection({ heading = "Events and Training" }: { hea
           ref={scrollRef}
           onScroll={checkScroll}
           className={`flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto scrollbar-hide pr-4 sm:pr-6 md:pr-8 lg:pr-10${heading === "Patent" ? " md:justify-center" : ""}`}
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehaviorX: "contain",
+          }}
         >
           {heading === "Patent" || heading === "Publications" || heading === "Resources" ? (
             /* No featured card — all small cards */

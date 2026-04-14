@@ -156,14 +156,22 @@ export default function TabbedContent() {
 
       {/* White container */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="bg-white border border-[#C1E2FF] overflow-hidden rounded-b-lg shadow-[0px_0px_16px_0px_rgba(0,0,0,0.13)]">
+        <div className="bg-white border border-[#C1E2FF] overflow-hidden isolate rounded-b-lg shadow-[0px_0px_16px_0px_rgba(0,0,0,0.13)]">
           {/* Tabs */}
-          <div className="flex overflow-x-auto scrollbar-hide border-b border-[#C1E2FF]" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+          <div
+            className="flex overflow-x-auto scrollbar-hide border-b border-[#C1E2FF] snap-x snap-mandatory"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+              overscrollBehaviorX: "contain",
+            }}
+          >
             {tabData.map((tab, i) => (
               <button
                 key={tab.label}
                 onClick={() => setActiveTab(i)}
-                className={`flex-none sm:flex-1 whitespace-nowrap px-4 sm:px-6 lg:px-8 py-3.5 sm:py-5 text-[12px] sm:text-[13px] lg:text-[14px] font-semibold border-b-[3px] -mb-px transition-colors text-center ${
+                className={`flex-none sm:flex-1 snap-start whitespace-nowrap px-4 sm:px-6 lg:px-8 py-3.5 sm:py-5 text-[12px] sm:text-[13px] lg:text-[14px] font-semibold border-b-[3px] -mb-px transition-colors text-center ${
                   activeTab === i
                     ? "border-accent text-accent"
                     : "border-transparent text-gray-500 hover:text-gray-700"

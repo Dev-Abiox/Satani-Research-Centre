@@ -168,11 +168,9 @@ export default function Navbar() {
         ref={navRef}
         className={`fixed top-0 left-0 right-0 z-[800] h-[64px] transition-[background-color,border-color] duration-300 ${
           isHome
-            ? `backdrop-blur-xl backdrop-saturate-150 ${
-                scrolled
-                  ? "bg-neutral-900/85 border-b border-white/15"
-                  : "bg-neutral-900/40 border-b border-white/10"
-              }`
+            ? scrolled
+              ? "bg-neutral-900 border-b border-white/15"
+              : "bg-neutral-900/80 border-b border-white/10"
             : "bg-neutral-900 border-b border-white/10"
         }`}
       >
