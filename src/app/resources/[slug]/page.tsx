@@ -134,101 +134,104 @@ export default function ResourceDetailPage({ params }: { params: { slug: string 
       </div>
 
       {/* Content below image — same width as image */}
-      <div className="max-w-[800px] mx-auto px-6 sm:px-10 lg:px-16">
-        {/* Category label */}
-        <p className="text-[20px] sm:text-[22px] text-neutral-400 font-light mb-1">
-          Resource
-        </p>
-
-        {/* Date */}
-        {resource.date && (
-          <p className="text-[14px] text-neutral-500 mb-6">
-            {resource.date}
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="max-w-[800px]">
+          {/* Category label */}
+          <p className="text-[20px] sm:text-[22px] text-neutral-400 font-light mb-1">
+            Resource
           </p>
-        )}
 
-        {/* Title */}
-        <h1 className="text-[32px] sm:text-[38px] lg:text-[44px] font-bold text-neutral-900 leading-[1.15] mb-10">
-          {resource.title}
-        </h1>
+          {/* Date */}
+          {resource.date && (
+            <p className="text-[14px] text-neutral-500 mb-6">
+              {resource.date}
+            </p>
+          )}
+
+          {/* Title */}
+          <h1 className="text-[32px] sm:text-[38px] lg:text-[44px] font-bold text-neutral-900 leading-[1.15] mb-10">
+            {resource.title}
+          </h1>
+        </div>
       </div>
 
       {/* Article body */}
-      <article className="max-w-[800px] mx-auto px-6 sm:px-10 lg:px-16 pb-12">
-        <div className="text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
-          {resource.content.map((block: ContentBlock, index: number) => {
-            if (block.type === "heading") {
-              return (
-                <h2
-                  key={index}
-                  className="text-[22px] sm:text-[24px] font-bold text-neutral-900 mt-10 mb-2"
-                >
-                  {block.text}
-                </h2>
-              );
-            }
-            if (block.type === "author") {
-              return (
-                <p
-                  key={index}
-                  className="text-[15px] font-semibold text-neutral-500 italic mt-8"
-                >
-                  {block.text}
-                </p>
-              );
-            }
-            if (block.text === "DOWNLOAD_PDF" && resource.pdfUrl) {
-              return (
-                <a
-                  key={index}
-                  href={resource.pdfUrl}
-                  download
-                  className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-accent text-white font-semibold rounded-full hover:bg-accent-dark transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
-                  </svg>
-                  Download the complete research article (PDF)
-                </a>
-              );
-            }
-            return <p key={index}>{block.text}</p>;
-          })}
-        </div>
-
-        {/* Divider */}
-        <hr className="border-neutral-200 my-12" />
-
-        {/* Related Resource */}
-        {relatedResource && (
-          <div>
-            <h2 className="text-[28px] sm:text-[32px] font-light text-neutral-900 mb-6">
-              More Resources
-            </h2>
-            <hr className="border-neutral-200 mb-8" />
-
-            <Link
-              href={`/resources/${relatedResource.slug}`}
-              className="group flex flex-col sm:flex-row gap-6 sm:gap-8 pb-8 border-b border-neutral-200"
-            >
-              <div className="relative flex-shrink-0 overflow-hidden w-full sm:w-[240px] lg:w-[280px] h-[180px] sm:h-[160px]">
-                <Image
-                  src={relatedResource.imageUrl}
-                  alt={relatedResource.title}
-                  fill
-                 
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, 280px"
-                />
-              </div>
-              <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <h3 className="text-[20px] sm:text-[22px] lg:text-[24px] font-light text-accent group-hover:underline leading-snug">
-                  {relatedResource.title}
-                </h3>
-              </div>
-            </Link>
+      <article className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pb-12">
+        <div className="max-w-[800px]">
+          <div className="text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
+            {resource.content.map((block: ContentBlock, index: number) => {
+              if (block.type === "heading") {
+                return (
+                  <h2
+                    key={index}
+                    className="text-[22px] sm:text-[24px] font-bold text-neutral-900 mt-10 mb-2"
+                  >
+                    {block.text}
+                  </h2>
+                );
+              }
+              if (block.type === "author") {
+                return (
+                  <p
+                    key={index}
+                    className="text-[15px] font-semibold text-neutral-500 italic mt-8"
+                  >
+                    {block.text}
+                  </p>
+                );
+              }
+              if (block.text === "DOWNLOAD_PDF" && resource.pdfUrl) {
+                return (
+                  <a
+                    key={index}
+                    href={resource.pdfUrl}
+                    download
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-accent text-white font-semibold rounded-full hover:bg-accent-dark transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
+                    </svg>
+                    Download the complete research article (PDF)
+                  </a>
+                );
+              }
+              return <p key={index}>{block.text}</p>;
+            })}
           </div>
-        )}
+
+          {/* Divider */}
+          <hr className="border-neutral-200 my-12" />
+
+          {/* Related Resource */}
+          {relatedResource && (
+            <div>
+              <h2 className="text-[28px] sm:text-[32px] font-light text-neutral-900 mb-6">
+                More Resources
+              </h2>
+              <hr className="border-neutral-200 mb-8" />
+
+              <Link
+                href={`/resources/${relatedResource.slug}`}
+                className="group flex flex-col sm:flex-row gap-6 sm:gap-8 pb-8 border-b border-neutral-200"
+              >
+                <div className="relative flex-shrink-0 overflow-hidden w-full sm:w-[240px] lg:w-[280px] h-[180px] sm:h-[160px]">
+                  <Image
+                    src={relatedResource.imageUrl}
+                    alt={relatedResource.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, 280px"
+                  />
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <h3 className="text-[20px] sm:text-[22px] lg:text-[24px] font-light text-accent group-hover:underline leading-snug">
+                    {relatedResource.title}
+                  </h3>
+                </div>
+              </Link>
+            </div>
+          )}
+        </div>
       </article>
     </div>
     </>
