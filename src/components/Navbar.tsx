@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -82,6 +82,11 @@ export default function Navbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  // Respect the OS "Reduce Motion" accessibility setting. When on, we skip
+  // the drawer slide/fade so the instant CSS transition from globals.css
+  // doesn't conflict with framer-motion's 200ms JS animation (which caused
+  // a device-specific open-then-close flicker).
+  const shouldReduceMotion = useReducedMotion();
 
   // Lock body scroll when mobile menu is open — iOS-safe technique.
   // Using overflow:hidden on body causes iOS Safari to snap the scroll
@@ -352,9 +357,10 @@ export default function Navbar() {
         {mobileOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
               style={{ willChange: "opacity" }}
               className="fixed inset-0 bg-black/40 z-[810] lg:hidden"
               onClick={() => { setMobileOpen(false); setMobileAccordion(null); }}
@@ -365,10 +371,10 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Main menu"
-              initial={{ opacity: 0, y: -10 }}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              exit={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
               style={{ willChange: "transform, opacity" }}
               className="fixed top-[64px] left-0 right-0 z-[820] lg:hidden bg-white shadow-xl border-t border-neutral-100 max-h-[calc(100dvh-64px)] overflow-y-auto"
             >
