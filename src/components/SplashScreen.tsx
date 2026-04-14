@@ -24,8 +24,9 @@ export default function SplashScreen() {
   const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
-    // If we've already shown the splash, clean up any lingering cover/nav-hide and bail
+    // If we've already shown the splash, force-hide and clean up any lingering cover
     if (alreadyShown()) {
+      setIsVisible(false);
       const cover = document.getElementById("__splash_cover");
       if (cover) cover.remove();
       document.body.style.backgroundColor = "";
@@ -34,8 +35,12 @@ export default function SplashScreen() {
       return;
     }
 
-    // First visit of this session — play the splash and remember we did
-    try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch {}
+    // First visit of this session — play the splash
+    // NOTE: we intentionally do NOT set the sessionStorage flag here.
+    // In React StrictMode (dev), setting it eagerly would cause the second
+    // effect run to see the flag, hit the bail branch, and leave isVisible=true
+    // forever (since the first run's timer that would setIsVisible(false) got
+    // cleared by cleanup). We set the flag at the end of the splash instead.
 
     // Remove the static cover — SplashScreen takes over
     const cover = document.getElementById("__splash_cover");
@@ -60,6 +65,8 @@ export default function SplashScreen() {
         document.body.style.backgroundColor = "";
         const hideNav = document.getElementById("__hide_nav");
         if (hideNav) hideNav.remove();
+        // Mark the splash as shown now that it has actually played to completion
+        try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch {}
       }, 400);
     }, 800);
 

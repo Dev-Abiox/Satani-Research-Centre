@@ -115,7 +115,7 @@ export default function RootLayout({
           style={{ position: "fixed", inset: 0, zIndex: 99999, backgroundColor: "#001222" }}
           suppressHydrationWarning
         />
-        <script dangerouslySetInnerHTML={{ __html: `(function(){function k(){var c=document.getElementById("__splash_cover");if(c)c.remove();document.body.style.backgroundColor="";var h=document.getElementById("__hide_nav");if(h)h.remove()}try{if(sessionStorage.getItem("src_splash_shown")==="1"){k();return}}catch(e){}if(window.location.pathname!=="/"){k();return}var n=document.createElement("style");n.id="__hide_nav";n.textContent="nav{opacity:0!important}";document.head.appendChild(n);window.addEventListener("load",function(){setTimeout(k,2500)});setTimeout(k,4000)})();` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){function k(){var c=document.getElementById("__splash_cover");if(c)c.remove();document.body.style.backgroundColor="";var h=document.getElementById("__hide_nav");if(h)h.remove()}try{if(sessionStorage.getItem("src_splash_shown")==="1"){k();return}}catch(e){}if(window.location.pathname!=="/"){try{sessionStorage.setItem("src_splash_shown","1")}catch(e){}k();return}var n=document.createElement("style");n.id="__hide_nav";n.textContent="nav{opacity:0!important}";document.head.appendChild(n);window.addEventListener("load",function(){setTimeout(k,2500)});setTimeout(k,4000)})();` }} />
         <Navbar />
         <main><PageTransition>{children}</PageTransition></main>
         <Footer />
