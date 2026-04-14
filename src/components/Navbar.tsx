@@ -116,7 +116,9 @@ export default function Navbar() {
     const firstFocusable = mobileMenuRef.current?.querySelector<HTMLElement>(
       'a, button, [tabindex]:not([tabindex="-1"])'
     );
-    firstFocusable?.focus();
+    // preventScroll: true avoids an iOS Safari flicker where .focus() would
+    // trigger auto-scroll mid-animation and interrupt the drawer's y transform.
+    firstFocusable?.focus({ preventScroll: true });
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -339,6 +341,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              style={{ willChange: "opacity" }}
               className="fixed inset-0 bg-black/40 z-[810] lg:hidden"
               onClick={() => { setMobileOpen(false); setMobileAccordion(null); }}
             />
@@ -352,7 +355,8 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-[64px] left-0 right-0 z-[820] lg:hidden bg-white shadow-xl border-t border-neutral-100 max-h-[calc(100vh-64px)] overflow-y-auto"
+              style={{ willChange: "transform, opacity" }}
+              className="fixed top-[64px] left-0 right-0 z-[820] lg:hidden bg-white shadow-xl border-t border-neutral-100 max-h-[calc(100dvh-64px)] overflow-y-auto"
             >
               <div className="px-6 py-4">
                 {menuItems.map((item) => (
