@@ -17,16 +17,18 @@ function alreadyShown(): boolean {
 }
 
 export default function SplashScreen() {
-  // Hide on initial render if we've already played the splash this session.
-  const [isVisible, setIsVisible] = useState(() => !alreadyShown());
+  // Always start hidden so SSR and client first render match (avoids hydration
+  // mismatch). The effect below will flip it to true on first visit of the
+  // session, or leave it false on subsequent visits.
+  const [isVisible, setIsVisible] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [animationData, setAnimationData] = useState<unknown>(null);
   const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
-    // If we've already shown the splash, force-hide and clean up any lingering cover
+    // If we've already shown the splash this session, just clean up lingering
+    // cover/nav-hide and stay hidden
     if (alreadyShown()) {
-      setIsVisible(false);
       const cover = document.getElementById("__splash_cover");
       if (cover) cover.remove();
       document.body.style.backgroundColor = "";
@@ -35,12 +37,13 @@ export default function SplashScreen() {
       return;
     }
 
-    // First visit of this session — play the splash
+    // First visit of this session — reveal the overlay and play the splash
+    setIsVisible(true);
+
     // NOTE: we intentionally do NOT set the sessionStorage flag here.
     // In React StrictMode (dev), setting it eagerly would cause the second
-    // effect run to see the flag, hit the bail branch, and leave isVisible=true
-    // forever (since the first run's timer that would setIsVisible(false) got
-    // cleared by cleanup). We set the flag at the end of the splash instead.
+    // effect run to see the flag, hit the bail branch, and leave isVisible
+    // stuck. We set the flag at the end of the splash instead.
 
     // Remove the static cover — SplashScreen takes over
     const cover = document.getElementById("__splash_cover");
