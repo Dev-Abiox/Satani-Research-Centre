@@ -173,7 +173,7 @@ export default function NewsInsights() {
   return (
     <section className="py-16 sm:py-20 lg:py-24 bg-neutral-50">
       {/* Heading */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20 2xl:px-28 3xl:px-[230px]">
         <div className="text-center mb-3 sm:mb-4">
           <h2 className="text-heading-3 sm:text-heading-2 lg:text-heading-1 font-normal text-gray-900">
             News and Insights
@@ -203,7 +203,7 @@ export default function NewsInsights() {
       </div>
 
       {/* Scrollable row with arrows — full width, no max-w */}
-      <div className="relative pl-4 sm:pl-6 md:pl-8 lg:pl-10 overflow-hidden">
+      <div className="relative pl-6 sm:pl-10 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-28 3xl:pl-[230px] overflow-hidden">
         <ArrowButton
           direction="left"
           onClick={() => scroll("left")}

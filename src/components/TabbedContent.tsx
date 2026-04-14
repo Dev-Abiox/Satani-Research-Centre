@@ -141,7 +141,7 @@ export default function TabbedContent() {
   return (
     <section className="py-16 sm:py-20 lg:py-28 xl:py-32 bg-[#F5F9FF]">
       {/* Intro Heading */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20 2xl:px-28 3xl:px-[230px]">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl lg:text-[2.2rem] font-semibold text-gray-900 mb-4 leading-tight">
             Pioneering the future of neuroscience and biomedical innovation
@@ -155,7 +155,7 @@ export default function TabbedContent() {
       </div>
 
       {/* White container */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20 2xl:px-28 3xl:px-[230px]">
         <div className="bg-white border border-[#C1E2FF] overflow-hidden rounded-b-lg shadow-[0px_0px_16px_0px_rgba(0,0,0,0.13)]">
           {/* Tabs */}
           <div className="flex overflow-x-auto scrollbar-hide border-b border-[#C1E2FF]" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
