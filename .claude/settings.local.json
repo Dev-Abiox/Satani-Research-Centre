@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --no-import-alias --use-npm)",
+      "Read(//c/Users/Piyush/Downloads/**)",
+      "Bash(npx create-next-app@latest satani-research-centre --typescript --tailwind --eslint --app --src-dir --no-import-alias --use-npm)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "WebFetch(domain:www.criver.com)",
+      "Bash(curl -s -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36\" https://www.criver.com/)",
+      "Bash(taskkill //f //im node.exe)",
+      "WebFetch(domain:www.pexels.com)",
+      "Bash(curl -L -o \"c:/Users/Piyush/Downloads/Satani Research Centre/public/hero-video.mp4\" \"https://videos.pexels.com/video-files/3214535/3214535-hd_1920_1080_30fps.mp4\" --max-time 120)",
+      "WebSearch",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:builtwith.com)",
+      "WebFetch(domain:www.wappalyzer.com)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:website.informer.com)"
+    ]
+  }
+}
