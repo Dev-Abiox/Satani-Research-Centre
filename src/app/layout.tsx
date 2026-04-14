@@ -109,13 +109,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className} style={{ backgroundColor: "#001222" }} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <div
           id="__splash_cover"
-          style={{ position: "fixed", inset: 0, zIndex: 99999, backgroundColor: "#001222" }}
+          style={{ position: "fixed", inset: 0, zIndex: 99999, backgroundColor: "#001222", display: "none" }}
           suppressHydrationWarning
         />
-        <script dangerouslySetInnerHTML={{ __html: `(function(){function k(){var c=document.getElementById("__splash_cover");if(c)c.remove();document.body.style.backgroundColor="";var h=document.getElementById("__hide_nav");if(h)h.remove()}try{if(sessionStorage.getItem("src_splash_shown")==="1"){k();return}}catch(e){}if(window.location.pathname!=="/"){try{sessionStorage.setItem("src_splash_shown","1")}catch(e){}k();return}var n=document.createElement("style");n.id="__hide_nav";n.textContent="nav{opacity:0!important}";document.head.appendChild(n);window.addEventListener("load",function(){setTimeout(k,2500)});setTimeout(k,4000)})();` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){function k(){var c=document.getElementById("__splash_cover");if(c)c.remove();document.body.style.backgroundColor="";var h=document.getElementById("__hide_nav");if(h)h.remove()}try{if(sessionStorage.getItem("src_splash_shown")==="1"){return}}catch(e){}if(window.location.pathname!=="/"){try{sessionStorage.setItem("src_splash_shown","1")}catch(e){}return}var c=document.getElementById("__splash_cover");if(c)c.style.display="block";document.body.style.backgroundColor="#001222";var n=document.createElement("style");n.id="__hide_nav";n.textContent="nav{opacity:0!important}";document.head.appendChild(n);window.addEventListener("load",function(){setTimeout(k,2500)});setTimeout(k,4000)})();` }} />
         <Navbar />
         <main><PageTransition>{children}</PageTransition></main>
         <Footer />
