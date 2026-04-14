@@ -153,7 +153,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
 
       {/* Article body */}
       <article className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 pb-12">
-        <div className="text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
+        <div className="max-w-[720px] text-neutral-700 text-[16px] sm:text-[17px] leading-[1.8] space-y-6">
           {article.content.map((block: ContentBlock, index: number) => {
             if (block.type === "heading") {
               return (

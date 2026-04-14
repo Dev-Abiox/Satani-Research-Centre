@@ -183,33 +183,35 @@ export default function TabbedContent() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Image + Text — 2 column */}
-              <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* Image + Text — 2 column on xl+, stacked below */}
+              <div className="grid grid-cols-1 xl:grid-cols-2">
                 {/* Left: Image or Video — clickable, routes to /projects */}
                 <Link
                   href="/projects"
                   aria-label={`Explore ${active.heading}`}
-                  className="group relative block h-[240px] sm:h-[400px] md:h-[420px] lg:h-[480px] xl:h-[520px] bg-neutral-100 overflow-hidden"
+                  className="group block bg-neutral-100 overflow-hidden xl:flex xl:items-center"
                 >
-                  {/\.(mp4|webm|ogg)$/i.test(active.imageUrl) ? (
-                    <video
-                      key={active.imageUrl}
-                      src={active.imageUrl}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                  ) : (
-                    <Image
-                      src={active.imageUrl}
-                      alt={active.heading}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  )}
+                  <div className="relative w-full aspect-[16/10]">
+                    {/\.(mp4|webm|ogg)$/i.test(active.imageUrl) ? (
+                      <video
+                        key={active.imageUrl}
+                        src={active.imageUrl}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      />
+                    ) : (
+                      <Image
+                        src={active.imageUrl}
+                        alt={active.heading}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        sizes="(max-width: 1280px) 100vw, 50vw"
+                      />
+                    )}
+                  </div>
                 </Link>
 
                 {/* Right: Content */}
@@ -233,13 +235,13 @@ export default function TabbedContent() {
               </div>
 
               {/* Bottom 3 Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-3 border-t border-gray-200">
                 {active.cards.map((card, i) => (
                   <div
                     key={card.title}
                     className={`px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10 ${
                       i < active.cards.length - 1
-                        ? "border-b sm:border-b-0 sm:border-r border-gray-200"
+                        ? "border-b md:border-b-0 md:border-r border-gray-200"
                         : ""
                     } hover:bg-gray-50 transition-colors`}
                   >

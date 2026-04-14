@@ -73,18 +73,18 @@ export default function MediaCTA() {
           ) : (
             <form onSubmit={handleSubmit} className="max-w-lg relative">
               <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col lg:flex-row gap-3">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="flex-1 px-5 py-3 rounded-full bg-white/10 border border-white/60 text-white placeholder-white/50 text-[14px] focus:outline-none focus:bg-white/15 focus:border-white/80 transition-all"
+                  className="flex-1 min-w-0 px-5 py-3 rounded-full bg-white/10 border border-white/60 text-white placeholder-white/50 text-[14px] focus:outline-none focus:bg-white/15 focus:border-white/80 transition-all"
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-white text-[#0B1F3A] text-[14px] font-semibold hover:bg-white/90 transition-all duration-300 whitespace-nowrap"
+                  className="inline-flex flex-shrink-0 items-center justify-center gap-2 px-7 py-3 rounded-full bg-white text-[#0B1F3A] text-[14px] font-semibold hover:bg-white/90 transition-all duration-300 whitespace-nowrap"
                 >
                   Subscribe
                   <svg

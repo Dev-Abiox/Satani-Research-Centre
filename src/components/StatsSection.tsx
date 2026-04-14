@@ -154,7 +154,7 @@ export default function StatsSection() {
       </div>
 
       {/* Two Column Layout — CSS transition instead of AnimatePresence */}
-      <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] md:grid-cols-[300px_1fr] lg:grid-cols-[380px_1fr] gap-6 sm:gap-8 md:gap-10 lg:gap-14 mb-14 sm:mb-16 lg:mb-20 items-center md:min-h-[460px] lg:min-h-[500px]">
+      <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] md:grid-cols-[300px_1fr] lg:grid-cols-[380px_1fr] gap-6 sm:gap-8 md:gap-10 lg:gap-14 mb-14 sm:mb-16 lg:mb-20 items-center">
         {/* Left: Stats — show only first stat on mobile/tablet, both on desktop */}
         <div
           key={`stats-${activeTab}`}
@@ -175,7 +175,7 @@ export default function StatsSection() {
         {/* Right: Image Card with Overlay Text */}
         <div
           key={`image-${activeTab}`}
-          className="relative rounded-lg overflow-hidden h-[280px] sm:h-[380px] md:h-[460px] lg:h-[500px] animate-[fadeIn_0.4s_ease-out]"
+          className="relative rounded-lg overflow-hidden w-full aspect-[16/10] min-h-[260px] sm:min-h-[260px] md:min-h-[260px] lg:min-h-[280px] animate-[fadeIn_0.4s_ease-out]"
         >
           <Image
             src={active.imageUrl}
