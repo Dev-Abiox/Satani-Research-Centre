@@ -5,13 +5,38 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+const STORAGE_KEY = "src_splash_shown";
+
+function alreadyShown(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export default function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(true);
+  // Hide on initial render if we've already played the splash this session.
+  const [isVisible, setIsVisible] = useState(() => !alreadyShown());
   const [isFading, setIsFading] = useState(false);
   const [animationData, setAnimationData] = useState<unknown>(null);
   const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
+    // If we've already shown the splash, clean up any lingering cover/nav-hide and bail
+    if (alreadyShown()) {
+      const cover = document.getElementById("__splash_cover");
+      if (cover) cover.remove();
+      document.body.style.backgroundColor = "";
+      const hideNav = document.getElementById("__hide_nav");
+      if (hideNav) hideNav.remove();
+      return;
+    }
+
+    // First visit of this session — play the splash and remember we did
+    try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch {}
+
     // Remove the static cover — SplashScreen takes over
     const cover = document.getElementById("__splash_cover");
     if (cover) cover.style.display = "none";
