@@ -83,14 +83,28 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  // Lock body scroll only for mobile menu (not desktop dropdowns)
+  // Lock body scroll when mobile menu is open — iOS-safe technique.
+  // Using overflow:hidden on body causes iOS Safari to snap the scroll
+  // position and trigger a layout reflow, which creates a visible stutter
+  // during the drawer's entry animation. The position:fixed + negative-top
+  // trick freezes the body at its current scroll position without the snap.
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
+    if (!mobileOpen) return;
+    const scrollY = window.scrollY;
+    const body = document.body;
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    return () => {
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      window.scrollTo(0, scrollY);
+    };
   }, [mobileOpen]);
 
   // Track scroll position with throttle
