@@ -32,6 +32,10 @@ const nextConfig = {
       { source: "/procurement.html", destination: "/procurement", permanent: true },
       { source: "/privacy-policy.html", destination: "/privacy-policy", permanent: true },
       { source: "/terms-and-conditions.html", destination: "/terms-and-conditions", permanent: true },
+      // Specific Google sitelinks — map to semantically-correct new pages
+      { source: "/open-positions.html", destination: "/careers", permanent: true },
+      { source: "/dbs-surgery-london.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/cognitively-operated-system.html", destination: "/insights/cognitively-operated-system", permanent: true },
       // Catch-all fallback: any other legacy .html URL that isn't in the
       // explicit list above lands on the homepage instead of 404. Better
       // user experience + Google sees a permanent redirect instead of a
