@@ -35,6 +35,11 @@ const nextConfig = {
       // Specific Google sitelinks — cover every plausible Hostinger slug
       // variant since we don't know Google's exact indexed URL
       // "Open Positions" sitelink -> /careers
+      // CONFIRMED via Google site: search — it's a subdirectory index,
+      // not a flat .html file
+      { source: "/open-positions/index.html", destination: "/careers", permanent: true },
+      { source: "/open-positions", destination: "/careers", permanent: true },
+      { source: "/open-positions/", destination: "/careers", permanent: true },
       { source: "/open-positions.html", destination: "/careers", permanent: true },
       { source: "/openpositions.html", destination: "/careers", permanent: true },
       { source: "/positions.html", destination: "/careers", permanent: true },
