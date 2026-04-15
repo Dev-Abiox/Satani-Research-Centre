@@ -61,7 +61,7 @@ export default function ProjectsPage() {
                 src="/images/Projects/projects-banner.webp"
                 alt="Research projects at Satani Research Centre"
                 fill
-                className="object-cover"
+                className="object-contain"
                 sizes="(max-width: 768px) 100vw, 45vw"
                 priority
               />
