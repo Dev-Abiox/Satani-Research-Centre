@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// Fail fast on boot if SMTP config is missing — error surfaces in
+// Vercel logs instead of hiding behind a generic 500 on first submission.
+const REQUIRED_SMTP_VARS = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"] as const;
+for (const key of REQUIRED_SMTP_VARS) {
+  if (!process.env[key]) {
+    throw new Error(`[contact route] Missing required env var: ${key}`);
+  }
+}
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),

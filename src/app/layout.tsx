@@ -20,11 +20,19 @@ export const metadata: Metadata = {
   description:
     "Satani Research Centre is dedicated to advancing biomedical research, drug discovery, and scientific innovation for a healthier world.",
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
     apple: "/favicon.png",
   },
   manifest: "/site.webmanifest",
-  metadataBase: new URL("https://sataniresearchcentre.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "https://sataniresearchcentre.com")
+  ),
   alternates: {
     canonical: "/",
   },

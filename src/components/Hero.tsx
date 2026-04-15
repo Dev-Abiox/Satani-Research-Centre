@@ -9,7 +9,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover scale-105 blur-sm"
+        className="object-cover scale-105"
       />
 
       {/* Dark overlay + gradient for headline readability */}
