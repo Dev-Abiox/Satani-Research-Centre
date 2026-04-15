@@ -19,6 +19,7 @@ const tabContent = [
     overlayText:
       "An independent, interdisciplinary research organisation at the convergence of biosignals, behaviour, and biomedical systems.",
     link: "/about",
+    ctaLabel: "Learn more about Satani Research Centre",
   },
   {
     label: "Our Mission",
@@ -30,6 +31,7 @@ const tabContent = [
     overlayText:
       "Developing safer, smarter, and more effective solutions for those living with neurological and biomedical conditions.",
     link: "/our-mission",
+    ctaLabel: "Read our mission and values",
   },
   {
     label: "Research Topic",
@@ -49,6 +51,7 @@ const tabContent = [
     overlayText:
       "From BCI systems deployed in live surgeries to biohybrid neural platforms — pioneering research with real-world clinical impact.",
     link: "/research-topics",
+    ctaLabel: "Explore our research topics",
   },
   {
     label: "Team",
@@ -66,6 +69,7 @@ const tabContent = [
     overlayText:
       "A diverse, passionate, and multidisciplinary team united by a shared commitment to advancing neuroscience for the benefit of humanity.",
     link: "/team",
+    ctaLabel: "Meet the research team",
   },
 ];
 
@@ -196,8 +200,8 @@ export default function StatsSection() {
               href={active.link}
               className="inline-flex items-center gap-2 text-white text-[13px] sm:text-[14px] font-semibold hover:underline"
             >
-              Learn More
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {active.ctaLabel}
+              <svg aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
