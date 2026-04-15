@@ -12,7 +12,7 @@ export default function Hero() {
         sizes="100vw"
         placeholder="blur"
         blurDataURL={blurHashes["/images/hero.jpg"]}
-        className="object-cover scale-105"
+        className="object-cover scale-105 blur-[2px]"
       />
 
       {/* Dark overlay + gradient for headline readability */}
