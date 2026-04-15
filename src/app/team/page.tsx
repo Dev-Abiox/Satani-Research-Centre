@@ -186,7 +186,7 @@ export default function TeamPage() {
             <h1 className="text-[24px] sm:text-[32px] md:text-[38px] lg:text-[44px] font-bold text-white mb-4 leading-tight max-w-4xl">
               Meet the people behind our mission to advance scientific discovery.
             </h1>
-            <p className="text-white/70 text-[15px] sm:text-[17px] max-w-2xl leading-relaxed">
+            <p className="text-white/90 text-[15px] sm:text-[17px] max-w-2xl leading-relaxed">
               A diverse, passionate, and multidisciplinary team of scientists,
               engineers, clinicians, and communicators — united by a shared
               commitment to advancing neuroscience for the benefit of humanity.

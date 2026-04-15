@@ -221,7 +221,10 @@ export default function TabbedContent() {
                           isActive ? "opacity-100 group-hover:scale-105" : "opacity-0 pointer-events-none"
                         }`}
                         aria-hidden={!isActive}
-                      />
+                      >
+                        {/* Decorative silent background video — empty captions track satisfies WCAG/Lighthouse */}
+                        <track kind="captions" src="/empty.vtt" srcLang="en" label="No captions (decorative video)" default />
+                      </video>
                     ) : (
                       <Image
                         key={tab.imageUrl}

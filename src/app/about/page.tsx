@@ -163,7 +163,7 @@ export default function AboutPage() {
             <h1 className="text-[24px] sm:text-[32px] md:text-[38px] lg:text-[44px] font-bold text-white mb-4 leading-tight max-w-4xl">
               Advancing scientific innovation for a healthier world.
             </h1>
-            <p className="text-white/70 text-[15px] sm:text-[17px] max-w-2xl leading-relaxed">
+            <p className="text-white/90 text-[15px] sm:text-[17px] max-w-2xl leading-relaxed">
               An independent, interdisciplinary research organisation at the convergence of biosignals, behaviour, and biomedical systems.
             </p>
           </div>
@@ -210,13 +210,13 @@ export default function AboutPage() {
       {/* Mission Highlight (#4) */}
       <section className="bg-accent py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-6 sm:px-10 text-center">
-          <svg className="w-10 h-10 text-white/30 mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24">
+          <svg aria-hidden="true" className="w-10 h-10 text-white/50 mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
           <blockquote className="text-[22px] sm:text-[28px] lg:text-[34px] font-light text-white leading-snug mb-6">
             Innovating at the Convergence of Biosignals, Behaviour, and Biomedical Systems.
           </blockquote>
-          <p className="text-white/60 text-[14px] sm:text-[16px] uppercase tracking-widest font-semibold">
+          <p className="text-white/90 text-[14px] sm:text-[16px] uppercase tracking-widest font-semibold">
             Satani Research Centre
           </p>
         </div>

@@ -390,8 +390,9 @@ export default function EventsSection({ heading = "Events and Training" }: { hea
             href={viewAllHref}
             className="text-accent text-[14px] font-semibold hover:underline inline-flex items-center gap-1.5"
           >
-            View All
+            View all {heading.toLowerCase()}
             <svg
+              aria-hidden="true"
               className="w-4 h-4"
               fill="none"
               viewBox="0 0 24 24"

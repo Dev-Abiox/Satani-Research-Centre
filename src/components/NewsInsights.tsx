@@ -64,7 +64,7 @@ function SmallCard({ tag, title, description, imageUrl, slug }: (typeof articles
     >
       {/* Top: Text */}
       <div className="shrink-0 p-4 sm:p-5 flex flex-col justify-start">
-        <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] text-gray-400 block mb-1.5 sm:mb-2">
+        <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] text-gray-600 block mb-1.5 sm:mb-2">
           {tag}
         </span>
         <h3 className="font-semibold text-gray-900 text-[15px] sm:text-[17px] lg:text-[19px] leading-snug group-hover:text-accent transition-colors line-clamp-2">
@@ -184,8 +184,9 @@ export default function NewsInsights() {
             href="/insights"
             className="text-accent text-[14px] font-semibold hover:underline inline-flex items-center gap-1.5"
           >
-            View All
+            View all insights
             <svg
+              aria-hidden="true"
               className="w-4 h-4"
               fill="none"
               viewBox="0 0 24 24"
