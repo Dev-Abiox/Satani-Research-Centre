@@ -10,13 +10,17 @@ interface InsightCardProps {
 export default function InsightCard({ article }: InsightCardProps) {
   const blur = blurHashes[article.imageUrl];
   return (
-    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
+    <Link
+      href={`/insights/${article.slug}`}
+      aria-label={article.title}
+      className="group bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col"
+    >
       <div className="relative overflow-hidden aspect-[16/10]">
         <Image
           src={article.imageUrl}
           alt={article.title}
           fill
-          className="object-cover hover:scale-105 transition-transform duration-500 ease-out"
+          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           {...(blur && { placeholder: "blur" as const, blurDataURL: blur })}
         />
@@ -25,14 +29,11 @@ export default function InsightCard({ article }: InsightCardProps) {
         <h3 className="text-[15px] sm:text-[16px] font-semibold text-accent leading-snug line-clamp-4 mb-2">
           {article.title}
         </h3>
-        <Link
-          href={`/insights/${article.slug}`}
-          className="text-accent text-[14px] underline hover:text-accent-dark transition-colors mb-3"
-        >
+        <span className="text-accent text-[14px] underline group-hover:text-accent-dark transition-colors mb-3 self-start">
           more
-        </Link>
+        </span>
         <p className="text-[13px] text-neutral-500 mt-auto">{article.date}</p>
       </div>
-    </div>
+    </Link>
   );
 }
