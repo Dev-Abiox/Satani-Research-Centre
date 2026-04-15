@@ -77,6 +77,7 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [logoRevealed, setLogoRevealed] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -111,6 +112,12 @@ export default function Navbar() {
       window.scrollTo(0, scrollY);
     };
   }, [mobileOpen]);
+
+  // Reset the mobile logo reveal whenever the user leaves home hero —
+  // either by scrolling past the threshold or navigating off /.
+  useEffect(() => {
+    if (scrolled || !isHome) setLogoRevealed(false);
+  }, [scrolled, isHome]);
 
   // Track scroll position with throttle
   useEffect(() => {
@@ -202,6 +209,12 @@ export default function Navbar() {
               href="/"
               className="group flex-shrink-0 relative z-10 mr-auto lg:mr-10 flex items-center gap-3 overflow-hidden"
               aria-label="Satani Research Centre — Home"
+              onClick={(e) => {
+                if (isHome && !scrolled) {
+                  e.preventDefault();
+                  setLogoRevealed((v) => !v);
+                }
+              }}
             >
               <div
                 className="h-[60px] w-[60px] bg-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-transform duration-300 group-hover:scale-105"
@@ -216,7 +229,13 @@ export default function Navbar() {
                   maskPosition: "center",
                 }}
               />
-              <span className="text-[14px] font-bold tracking-tight text-gray-400 max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100 transition-all duration-500 ease-out whitespace-nowrap overflow-hidden">
+              <span
+                className={`text-[14px] font-bold tracking-tight text-gray-400 transition-all duration-500 ease-out whitespace-nowrap overflow-hidden ${
+                  isHome && !scrolled
+                    ? `${logoRevealed ? "max-w-[200px] opacity-100" : "max-w-0 opacity-0"} lg:max-w-0 lg:opacity-0 lg:group-hover:max-w-[200px] lg:group-hover:opacity-100`
+                    : "max-w-0 opacity-0"
+                }`}
+              >
                 Satani Research Centre
               </span>
             </Link>
