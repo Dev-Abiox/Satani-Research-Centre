@@ -41,6 +41,13 @@ const nextConfig = {
       { source: "/jobs.html", destination: "/careers", permanent: true },
       { source: "/career.html", destination: "/careers", permanent: true },
       // "Renowned Scientist Abhijeet..." sitelink -> DBS article
+      // CONFIRMED via Google site: search
+      {
+        source:
+          "/renowned-scientist-abhijeet-satani-from-india-invited-to-contribute-to-dbs-surgery-in-london.html",
+        destination: "/insights/dbs-surgery-london",
+        permanent: true,
+      },
       { source: "/dbs-surgery-london.html", destination: "/insights/dbs-surgery-london", permanent: true },
       { source: "/dbs-surgery.html", destination: "/insights/dbs-surgery-london", permanent: true },
       { source: "/renowned-scientist.html", destination: "/insights/dbs-surgery-london", permanent: true },
@@ -48,6 +55,13 @@ const nextConfig = {
       { source: "/abhijeet-dbs.html", destination: "/insights/dbs-surgery-london", permanent: true },
       { source: "/abhijeet-satani-dbs.html", destination: "/insights/dbs-surgery-london", permanent: true },
       // "Neuroscientist Abhijeet Satani..." sitelink -> COS article
+      // CONFIRMED via Google site: search
+      {
+        source:
+          "/neuroscientist-abhijeet-satani-unveils-cognitively-operated-system-in-ahmedabad.html",
+        destination: "/insights/cognitively-operated-system",
+        permanent: true,
+      },
       { source: "/cognitively-operated-system.html", destination: "/insights/cognitively-operated-system", permanent: true },
       { source: "/cos.html", destination: "/insights/cognitively-operated-system", permanent: true },
       { source: "/neuroscientist.html", destination: "/insights/cognitively-operated-system", permanent: true },
