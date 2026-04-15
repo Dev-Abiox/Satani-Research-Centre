@@ -32,15 +32,34 @@ const nextConfig = {
       { source: "/procurement.html", destination: "/procurement", permanent: true },
       { source: "/privacy-policy.html", destination: "/privacy-policy", permanent: true },
       { source: "/terms-and-conditions.html", destination: "/terms-and-conditions", permanent: true },
-      // Specific Google sitelinks — map to semantically-correct new pages
+      // Specific Google sitelinks — cover every plausible Hostinger slug
+      // variant since we don't know Google's exact indexed URL
+      // "Open Positions" sitelink -> /careers
       { source: "/open-positions.html", destination: "/careers", permanent: true },
+      { source: "/openpositions.html", destination: "/careers", permanent: true },
+      { source: "/positions.html", destination: "/careers", permanent: true },
+      { source: "/jobs.html", destination: "/careers", permanent: true },
+      { source: "/career.html", destination: "/careers", permanent: true },
+      // "Renowned Scientist Abhijeet..." sitelink -> DBS article
       { source: "/dbs-surgery-london.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/dbs-surgery.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/renowned-scientist.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/renowned-scientist-abhijeet.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/abhijeet-dbs.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      { source: "/abhijeet-satani-dbs.html", destination: "/insights/dbs-surgery-london", permanent: true },
+      // "Neuroscientist Abhijeet Satani..." sitelink -> COS article
       { source: "/cognitively-operated-system.html", destination: "/insights/cognitively-operated-system", permanent: true },
+      { source: "/cos.html", destination: "/insights/cognitively-operated-system", permanent: true },
+      { source: "/neuroscientist.html", destination: "/insights/cognitively-operated-system", permanent: true },
+      { source: "/neuroscientist-abhijeet.html", destination: "/insights/cognitively-operated-system", permanent: true },
+      { source: "/neuroscientist-abhijeet-satani.html", destination: "/insights/cognitively-operated-system", permanent: true },
+      { source: "/abhijeet-satani.html", destination: "/insights/cognitively-operated-system", permanent: true },
       // Catch-all fallback: any other legacy .html URL that isn't in the
-      // explicit list above lands on the homepage instead of 404. Better
-      // user experience + Google sees a permanent redirect instead of a
-      // broken link. MUST come last so specific rules win first.
-      { source: "/:path(.*)\\.html", destination: "/", permanent: true },
+      // explicit list above lands on the homepage. Using TEMPORARY (307)
+      // instead of permanent (308) so browsers do NOT cache it aggressively
+      // — this prevents the "sticky homepage" problem where once a URL gets
+      // redirected to /, every subsequent click stays cached client-side.
+      { source: "/:path(.*)\\.html", destination: "/", permanent: false },
     ];
   },
   async headers() {
