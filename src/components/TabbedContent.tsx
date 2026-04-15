@@ -159,12 +159,13 @@ export default function TabbedContent() {
         <div className="bg-white border border-[#C1E2FF] overflow-hidden isolate rounded-b-lg shadow-[0px_0px_16px_0px_rgba(0,0,0,0.13)]">
           {/* Tabs */}
           <div
-            className="flex overflow-x-auto scrollbar-hide border-b border-[#C1E2FF] snap-x snap-mandatory"
+            className="flex overflow-x-auto scrollbar-hide border-b border-[#C1E2FF]"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
               WebkitOverflowScrolling: "touch",
               overscrollBehaviorX: "contain",
+              touchAction: "pan-x",
             }}
           >
             {tabData.map((tab, i) => (
