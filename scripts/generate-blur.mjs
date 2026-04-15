@@ -1,15 +1,16 @@
 // One-shot generator for low-quality image placeholders (LQIP) used as
-// blurDataURL on banner <Image> components. Run with:
+// blurDataURL on every Next/Image component in the app. Run with:
 //   node scripts/generate-blur.mjs
 //
-// Reads each path in BANNERS, makes a 10px-wide webp, base64-encodes it,
+// Reads each path in IMAGES, makes a 12px-wide webp, base64-encodes it,
 // and writes the map to src/data/blurHashes.ts.
 
 import sharp from "sharp";
 import { writeFileSync } from "fs";
 import { resolve, join } from "path";
 
-const BANNERS = [
+const IMAGES = [
+  // Banners
   "public/images/hero.jpg",
   "public/images/Research Topic Banner.jpg",
   "public/images/about-us-banner.jpg",
@@ -22,16 +23,54 @@ const BANNERS = [
   "public/images/Publications/publication-banner.jpg",
   "public/images/news/news-insights-banner.jpg",
   "public/images/Resources/Resources Banner.jpg",
+  // Stats home page
   "public/images/Stats/Mission.jpg",
   "public/images/Stats/Team.jpg",
   "public/images/Stats/ResearchTopic.jpg",
   "public/images/Stats/AboutUs.jpg",
+  // Team
+  "public/images/Team/Abhijeet Satani.jpg",
+  "public/images/Team/Param Barodia.jpg",
+  "public/images/Team/Heth Joshi.jpg",
+  "public/images/Team/Bharath Bhanavth.jpg",
+  "public/images/Team/Drashti Shah.jpg",
+  "public/images/Team/Anwesha Borah.jpg",
+  "public/images/Team/Piyush Satpathy.jpg",
+  "public/images/Team/Akash Iyer.jpg",
+  "public/images/Team/Riya Tiwari.jpg",
+  "public/images/Team/Bipin Parmar.jpg",
+  // News / Insights
+  "public/images/news/News1.jpg",
+  "public/images/news/News2.jpg",
+  "public/images/news/News3.jpg",
+  "public/images/news/News4.jpg",
+  "public/images/news/News5.jpg",
+  "public/images/news/News6.jpg",
+  "public/images/news/News7.jpg",
+  // Resources
+  "public/images/Resources/R1.jpg",
+  "public/images/Resources/R2.jpg",
+  "public/images/Resources/R3.jpg",
+  "public/images/Resources/R4.jpg",
+  "public/images/Resources/R5.jpg",
+  // Publications
+  "public/images/Publications/Pub1.jpg",
+  "public/images/Publications/Pub2.jpg",
+  "public/images/Publications/Pub3.jpg",
+  "public/images/Publications/Pub4.jpg",
+  "public/images/Publications/Pub5.jpg",
+  "public/images/Publications/Pub6.jpg",
+  "public/images/Publications/Pub7.jpg",
+  "public/images/Publications/Pub8.jpg",
+  // TabbedContent non-video project tabs
+  "public/images/Projects/Project2.jpg",
+  "public/images/Projects/Project4.jpg",
 ];
 
 const ROOT = resolve(".");
 const out = {};
 
-for (const rel of BANNERS) {
+for (const rel of IMAGES) {
   try {
     const abs = join(ROOT, rel);
     const buf = await sharp(abs)

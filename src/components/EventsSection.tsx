@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { resources } from "@/data/resources";
+import { blurHashes } from "@/data/blurHashes";
 
 const resourceEvents = resources.slice(0, 5).map((r) => ({
   date: "",
@@ -196,6 +197,10 @@ function FeaturedEventCard({
         fill
         className="object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
         sizes="(max-width: 640px) 80vw, (max-width: 1024px) 30vw, 26vw"
+        {...(blurHashes[imageUrl] && {
+          placeholder: "blur" as const,
+          blurDataURL: blurHashes[imageUrl],
+        })}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
@@ -264,9 +269,12 @@ function SmallEventCard({
           src={imageUrl}
           alt={title}
           fill
-         
           className="object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
           sizes="(max-width: 640px) 80vw, (max-width: 1024px) 30vw, 26vw"
+          {...(blurHashes[imageUrl] && {
+            placeholder: "blur" as const,
+            blurDataURL: blurHashes[imageUrl],
+          })}
         />
       </div>
     </Link>

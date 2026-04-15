@@ -211,9 +211,10 @@ export default function TeamPage() {
               src="/images/Team/Abhijeet Satani.jpg"
               alt="Abhijeet Satani"
               fill
-             
               className="object-cover"
               sizes="280px"
+              placeholder="blur"
+              blurDataURL={blurHashes["/images/Team/Abhijeet Satani.jpg"]}
             />
           </div>
 

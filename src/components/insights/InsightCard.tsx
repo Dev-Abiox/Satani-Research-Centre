@@ -1,12 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { InsightArticle } from "@/data/insights";
+import { blurHashes } from "@/data/blurHashes";
 
 interface InsightCardProps {
   article: InsightArticle;
 }
 
 export default function InsightCard({ article }: InsightCardProps) {
+  const blur = blurHashes[article.imageUrl];
   return (
     <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
       <div className="relative overflow-hidden aspect-[16/10]">
@@ -14,9 +16,9 @@ export default function InsightCard({ article }: InsightCardProps) {
           src={article.imageUrl}
           alt={article.title}
           fill
-         
           className="object-cover hover:scale-105 transition-transform duration-500 ease-out"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          {...(blur && { placeholder: "blur" as const, blurDataURL: blur })}
         />
       </div>
       <div className="p-4 flex flex-col flex-1">

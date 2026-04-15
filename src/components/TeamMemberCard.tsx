@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 interface TeamMemberCardProps {
   name: string;
@@ -13,6 +14,7 @@ export default function TeamMemberCard({
   bio,
   imageUrl,
 }: TeamMemberCardProps) {
+  const blur = imageUrl ? blurHashes[imageUrl] : undefined;
   return (
     <div className="group">
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-neutral-100 mb-4">
@@ -21,9 +23,9 @@ export default function TeamMemberCard({
             src={imageUrl}
             alt={name}
             fill
-           
             className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            {...(blur && { placeholder: "blur" as const, blurDataURL: blur })}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-primary-50">
