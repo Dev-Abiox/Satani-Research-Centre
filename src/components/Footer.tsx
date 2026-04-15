@@ -53,11 +53,12 @@ export default function Footer() {
             <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
             <input
               type="email"
+              aria-label="Email address"
               placeholder="Email address"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               required
-              className="flex-1 px-4 py-2.5 bg-white text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none rounded-l-md"
+              className="flex-1 px-4 py-2.5 bg-white text-[13px] text-gray-800 placeholder-gray-500 focus:outline-none rounded-l-md"
             />
             <button
               type="submit"
@@ -83,7 +84,7 @@ export default function Footer() {
             <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5">
               <Link href="/procurement" className="py-1 hover:text-gray-300 transition-colors duration-200">Procurement</Link>
             </div>
-            <p className="text-white/50 text-[11px] mt-2">Registered 501(c)(3). EIN: 21-2141112082</p>
+            <p className="text-white/75 text-[11px] mt-2">Registered 501(c)(3). EIN: 21-2141112082</p>
           </div>
 
           {/* Social Icons */}
@@ -130,11 +131,12 @@ export default function Footer() {
                 <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
                 <input
                   type="email"
+                  aria-label="Email address"
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
                   required
-                  className="flex-1 px-5 py-3 bg-white text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none rounded-l-md"
+                  className="flex-1 px-5 py-3 bg-white text-[14px] text-gray-800 placeholder-gray-500 focus:outline-none rounded-l-md"
                 />
                 <button
                   type="submit"

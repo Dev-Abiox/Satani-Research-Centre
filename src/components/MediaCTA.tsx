@@ -77,10 +77,11 @@ export default function MediaCTA() {
                 <input
                   type="email"
                   required
+                  aria-label="Your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="flex-1 min-w-0 px-5 py-3 rounded-full bg-white/10 border border-white/60 text-white placeholder-white/50 text-[14px] focus:outline-none focus:bg-white/15 focus:border-white/80 transition-all"
+                  className="flex-1 min-w-0 px-5 py-3 rounded-full bg-white/10 border border-white/70 text-white placeholder-white/70 text-[14px] focus:outline-none focus:bg-white/15 focus:border-white/90 transition-all"
                 />
                 <button
                   type="submit"

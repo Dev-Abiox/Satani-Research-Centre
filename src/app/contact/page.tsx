@@ -199,7 +199,7 @@ export default function ContactPage() {
                     pattern="[A-Za-z\-' ]{2,50}"
                     title="Letters, spaces, hyphens and apostrophes only (2–50 characters)"
                     autoComplete="given-name"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -218,7 +218,7 @@ export default function ContactPage() {
                     pattern="[A-Za-z\-' ]{2,50}"
                     title="Letters, spaces, hyphens and apostrophes only (2–50 characters)"
                     autoComplete="family-name"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -236,7 +236,7 @@ export default function ContactPage() {
                     pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
                     title="Enter a valid email address (e.g. name@example.com)"
                     autoComplete="email"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -254,7 +254,7 @@ export default function ContactPage() {
                     pattern="[0-9]{10}"
                     title="Enter a 10-digit phone number (numbers only)"
                     autoComplete="tel"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -289,7 +289,7 @@ export default function ContactPage() {
                     maxLength={200}
                     title="Enter your full street address (5–200 characters)"
                     autoComplete="street-address"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -308,7 +308,7 @@ export default function ContactPage() {
                     pattern="[A-Za-z\-' ]{2,80}"
                     title="Letters, spaces, hyphens and apostrophes only (2–80 characters)"
                     autoComplete="address-level2"
-                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
+                    className="w-full px-4 py-2.5 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors"
                   />
                 </div>
                 <div>
@@ -367,7 +367,7 @@ export default function ContactPage() {
                     maxLength={2000}
                     title="Please provide at least 20 characters describing your inquiry"
                     placeholder="I have questions about..."
-                    className="w-full px-4 py-3 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors resize-vertical"
+                    className="w-full px-4 py-3 text-[14px] border border-neutral-300 rounded-sm bg-white text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors resize-vertical"
                   />
                 </div>
               </div>
