@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ScrollToSection from "@/components/ScrollToSection";
+import { blurHashes } from "@/data/blurHashes";
 
 const openPositions = [
   { department: "Satani Research Centre", position: "Postdoctoral Fellow" },
@@ -30,11 +31,13 @@ export default function CareersPage() {
             </div>
             <div className="relative flex-shrink-0 w-full md:w-[45%] max-w-[560px] aspect-[3/2] rounded overflow-hidden">
               <Image
-                src="/images/Open%20positions%20banner.webp"
+                src="/images/Open positions banner.webp"
                 alt="Team collaboration"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
+                placeholder="blur"
+                blurDataURL={blurHashes["/images/Open positions banner.webp"]}
                 priority
               />
             </div>

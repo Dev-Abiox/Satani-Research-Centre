@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ScrollToSection from "@/components/ScrollToSection";
+import { blurHashes } from "@/data/blurHashes";
 
 const PUBLICATIONS_JSONLD = [
   {
@@ -168,6 +169,8 @@ export default function PublicationsPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
+                placeholder="blur"
+                blurDataURL={blurHashes["/images/Publications/publication-banner.jpg"]}
                 priority
               />
             </div>

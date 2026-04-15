@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 export default function InsightsBanner() {
   return (
@@ -28,6 +29,8 @@ export default function InsightsBanner() {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 45vw"
+              placeholder="blur"
+              blurDataURL={blurHashes["/images/news/news-insights-banner.jpg"]}
               priority
             />
           </div>

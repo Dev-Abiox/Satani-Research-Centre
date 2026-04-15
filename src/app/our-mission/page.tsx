@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   },
 };
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 import SectionWrapper from "@/components/SectionWrapper";
 
 
@@ -132,12 +133,13 @@ export default function OurMissionPage() {
       {/* Hero with mission statement */}
       <div className="relative h-[320px] sm:h-[380px] md:h-[440px] overflow-hidden">
         <Image
-          src="/images/Our%20Mission%20banner.jpg"
+          src="/images/Our Mission banner.jpg"
           alt="Our Mission"
           fill
-         
           className="object-cover"
           sizes="100vw"
+          placeholder="blur"
+          blurDataURL={blurHashes["/images/Our Mission banner.jpg"]}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />

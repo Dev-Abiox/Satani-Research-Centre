@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 const researchTopics = [
   {
@@ -148,6 +149,8 @@ export default function ResearchTopicsPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
+                placeholder="blur"
+                blurDataURL={blurHashes["/images/Research Topic Banner.jpg"]}
                 priority
               />
             </div>

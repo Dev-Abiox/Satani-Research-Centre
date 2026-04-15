@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 const patents = [
   {
@@ -49,6 +50,8 @@ export default function PatentsPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
+                placeholder="blur"
+                blurDataURL={blurHashes["/images/patents-banner.jpg"]}
                 priority
               />
             </div>

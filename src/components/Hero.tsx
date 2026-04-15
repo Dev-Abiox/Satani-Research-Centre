@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 export default function Hero() {
   return (
@@ -9,6 +10,8 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
+        placeholder="blur"
+        blurDataURL={blurHashes["/images/hero.jpg"]}
         className="object-cover scale-105"
       />
 

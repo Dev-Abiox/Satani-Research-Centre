@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   },
 };
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 import ResearchCard from "@/components/ResearchCard";
 import Timeline from "@/components/Timeline";
 import SectionWrapper from "@/components/SectionWrapper";
@@ -147,9 +148,10 @@ export default function AboutPage() {
           src="/images/about-us-banner.jpg"
           alt="About Satani Research Centre"
           fill
-         
           className="object-contain"
           sizes="100vw"
+          placeholder="blur"
+          blurDataURL={blurHashes["/images/about-us-banner.jpg"]}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />

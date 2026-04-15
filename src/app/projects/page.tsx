@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 
 const projects = [
   {
@@ -63,6 +64,8 @@ export default function ProjectsPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 55vw, 720px"
+                placeholder="blur"
+                blurDataURL={blurHashes["/images/Projects/projects-banner.webp"]}
                 priority
               />
             </div>
