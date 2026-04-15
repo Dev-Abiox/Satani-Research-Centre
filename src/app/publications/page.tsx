@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import ScrollToSection from "@/components/ScrollToSection";
 import { blurHashes } from "@/data/blurHashes";
+
+export const metadata: Metadata = {
+  title: "Publications",
+  description:
+    "Peer-reviewed publications and preprints from Satani Research Centre spanning neuroscience, brain-computer interfaces, and biomedical innovation.",
+  alternates: { canonical: "/publications" },
+};
 
 const PUBLICATIONS_JSONLD = [
   {

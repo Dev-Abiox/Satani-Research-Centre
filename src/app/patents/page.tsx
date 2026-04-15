@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { blurHashes } from "@/data/blurHashes";
+
+export const metadata: Metadata = {
+  title: "Patents",
+  description:
+    "International patents filed by Satani Research Centre — including the Cognitively Operated System and other neurotechnology innovations.",
+  alternates: { canonical: "/patents" },
+};
 
 const patents = [
   {

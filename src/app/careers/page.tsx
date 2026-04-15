@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import ScrollToSection from "@/components/ScrollToSection";
 import { blurHashes } from "@/data/blurHashes";
+
+export const metadata: Metadata = {
+  title: "Careers",
+  description:
+    "Open research positions, postdoctoral fellowships, and internships at Satani Research Centre. Join a multidisciplinary team advancing neuroscience and biomedical innovation.",
+  alternates: { canonical: "/careers" },
+};
 
 const openPositions = [
   { department: "Satani Research Centre", position: "Postdoctoral Fellow" },

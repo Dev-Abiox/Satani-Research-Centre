@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { blurHashes } from "@/data/blurHashes";
+
+export const metadata: Metadata = {
+  title: "Research Topics",
+  description:
+    "Active research topics at Satani Research Centre — brain-computer interfaces, cognitive neuroscience, biomedical engineering, and more.",
+  alternates: { canonical: "/research-topics" },
+};
 
 const researchTopics = [
   {

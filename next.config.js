@@ -32,6 +32,11 @@ const nextConfig = {
       { source: "/procurement.html", destination: "/procurement", permanent: true },
       { source: "/privacy-policy.html", destination: "/privacy-policy", permanent: true },
       { source: "/terms-and-conditions.html", destination: "/terms-and-conditions", permanent: true },
+      // Catch-all fallback: any other legacy .html URL that isn't in the
+      // explicit list above lands on the homepage instead of 404. Better
+      // user experience + Google sees a permanent redirect instead of a
+      // broken link. MUST come last so specific rules win first.
+      { source: "/:path(.*)\\.html", destination: "/", permanent: true },
     ];
   },
   async headers() {
