@@ -56,13 +56,13 @@ export default function ProjectsPage() {
                 advancing the future of brain science and biomedical innovation.
               </p>
             </div>
-            <div className="relative flex-shrink-0 w-full md:w-[45%] max-w-[560px] aspect-[3/2] rounded overflow-hidden">
+            <div className="relative flex-shrink-0 w-full md:w-[55%] max-w-[720px] aspect-[1130/579] rounded overflow-hidden">
               <Image
                 src="/images/Projects/projects-banner.webp"
                 alt="Research projects at Satani Research Centre"
                 fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 45vw"
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 55vw, 720px"
                 priority
               />
             </div>
