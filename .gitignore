@@ -4,6 +4,7 @@ out/
 build/
 tsconfig.tsbuildinfo
 next-env.d.ts
+graphify-out/
 
 # Secrets — never commit actual env files
 .env

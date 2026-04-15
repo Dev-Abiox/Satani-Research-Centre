@@ -183,47 +183,71 @@ export default function TabbedContent() {
           </div>
 
           {/* Tab Body */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {/* Image + Text — 2 column on xl+, stacked below */}
-              <div className="grid grid-cols-1 xl:grid-cols-2">
-                {/* Left: Image or Video — clickable, routes to /projects */}
-                <Link
-                  href="/projects"
-                  aria-label={`Explore ${active.heading}`}
-                  className="group block bg-neutral-100 overflow-hidden xl:flex xl:items-center"
-                >
-                  <div className="relative w-full aspect-[16/10]">
-                    {/\.(mp4|webm|ogg)$/i.test(active.imageUrl) ? (
+          <div>
+            {/* Image + Text — 2 column on xl+, stacked below */}
+            <div className="grid grid-cols-1 xl:grid-cols-2">
+              {/* Left: Image or Video — clickable, routes to /projects.
+                  All media rendered up front so tab switches don't remount
+                  the <video> element (prevents freeze from re-fetching). */}
+              <Link
+                href="/projects"
+                aria-label={`Explore ${active.heading}`}
+                className="group block bg-neutral-100 overflow-hidden relative"
+              >
+                <div className="relative w-full aspect-[16/10] xl:aspect-auto xl:h-full xl:min-h-[460px]">
+                  {tabData.map((tab, i) => {
+                    const isVideo = /\.(mp4|webm|ogg)$/i.test(tab.imageUrl);
+                    const isActive = i === activeTab;
+                    return isVideo ? (
                       <video
-                        key={active.imageUrl}
-                        src={active.imageUrl}
+                        key={tab.imageUrl}
+                        src={tab.imageUrl}
                         autoPlay
                         loop
                         muted
                         playsInline
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        preload="auto"
+                        onStalled={(e) => {
+                          const v = e.currentTarget;
+                          try { v.load(); v.play().catch(() => {}); } catch {}
+                        }}
+                        onError={(e) => {
+                          const v = e.currentTarget;
+                          try { v.load(); v.play().catch(() => {}); } catch {}
+                        }}
+                        className={`absolute inset-0 w-full h-full object-cover transition-[transform,opacity] duration-500 ease-out ${
+                          isActive ? "opacity-100 group-hover:scale-105" : "opacity-0 pointer-events-none"
+                        }`}
+                        aria-hidden={!isActive}
                       />
                     ) : (
                       <Image
-                        src={active.imageUrl}
-                        alt={active.heading}
+                        key={tab.imageUrl}
+                        src={tab.imageUrl}
+                        alt={tab.heading}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        priority={i === 0}
+                        className={`object-cover transition-[transform,opacity] duration-500 ease-out ${
+                          isActive ? "opacity-100 group-hover:scale-105" : "opacity-0 pointer-events-none"
+                        }`}
                         sizes="(max-width: 1280px) 100vw, 50vw"
+                        aria-hidden={!isActive}
                       />
-                    )}
-                  </div>
-                </Link>
+                    );
+                  })}
+                </div>
+              </Link>
 
-                {/* Right: Content */}
-                <div className="flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 md:px-12 md:py-12 lg:px-16 lg:py-16">
+              {/* Right: Content (animated on tab change, video is not) */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`content-${activeTab}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 md:px-12 md:py-12 lg:px-16 lg:py-16"
+                >
                   <h3 className="text-2xl sm:text-3xl lg:text-[2rem] font-bold text-gray-900 mb-5 leading-snug">
                     {active.heading}
                   </h3>
@@ -239,11 +263,20 @@ export default function TabbedContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </Link>
-                </div>
-              </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-              {/* Bottom 3 Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 border-t border-gray-200">
+            {/* Bottom 3 Cards (animated on tab change) */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`cards-${activeTab}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="grid grid-cols-1 md:grid-cols-3 border-t border-gray-200"
+              >
                 {active.cards.map((card, i) => (
                   <div
                     key={card.title}
@@ -259,9 +292,9 @@ export default function TabbedContent() {
                     <p className="text-gray-500 text-[14px] leading-relaxed">{card.text}</p>
                   </div>
                 ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>
