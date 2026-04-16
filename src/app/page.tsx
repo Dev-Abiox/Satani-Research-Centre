@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import StatsSection from "@/components/StatsSection";
-import MediaCTA from "@/components/MediaCTA";
-import NewsInsights from "@/components/NewsInsights";
-import CareerCTA from "@/components/CareerCTA";
-import EventsSection from "@/components/EventsSection";
-import TabbedContent from "@/components/TabbedContent";
 import SplashScreen from "@/components/SplashScreen";
+
+// Below-fold components — lazy-loaded so the browser doesn't parse
+// their JS until after the hero + stats are interactive.
+const MediaCTA = dynamic(() => import("@/components/MediaCTA"), { ssr: false });
+const TabbedContent = dynamic(() => import("@/components/TabbedContent"), { ssr: false });
+const NewsInsights = dynamic(() => import("@/components/NewsInsights"), { ssr: false });
+const EventsSection = dynamic(() => import("@/components/EventsSection"), { ssr: false });
+const CareerCTA = dynamic(() => import("@/components/CareerCTA"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Home | Satani Research Centre",
