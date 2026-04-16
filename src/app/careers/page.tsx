@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ScrollToSection from "@/components/ScrollToSection";
-import { blurHashes } from "@/data/blurHashes";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -44,8 +43,6 @@ export default function CareersPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
-                placeholder="blur"
-                blurDataURL={blurHashes["/images/Open positions banner.webp"]}
                 priority
               />
             </div>

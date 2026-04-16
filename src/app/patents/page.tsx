@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { blurHashes } from "@/data/blurHashes";
+
 
 export const metadata: Metadata = {
   title: "Patents",
@@ -58,8 +58,6 @@ export default function PatentsPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
-                placeholder="blur"
-                blurDataURL={blurHashes["/images/patents-banner.jpg"]}
                 priority
               />
             </div>
