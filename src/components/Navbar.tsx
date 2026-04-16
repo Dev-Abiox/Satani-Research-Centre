@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -191,7 +191,7 @@ export default function Navbar() {
   };
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       <nav
         ref={navRef}
         className={`fixed top-0 left-0 right-0 z-[800] h-[64px] transition-[background-color,border-color] duration-300 ${
@@ -258,7 +258,7 @@ export default function Navbar() {
                       style={isHome ? { textShadow: "0 1px 3px rgba(0,0,0,0.35)" } : undefined}
                     >
                       {item.label}
-                      <motion.svg
+                      <m.svg
                         className="w-3.5 h-3.5 opacity-60"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -268,10 +268,10 @@ export default function Navbar() {
                         transition={{ duration: 0.2 }}
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </motion.svg>
+                      </m.svg>
 
                       {(hoveredItem === item.label || isActive || isCurrentSection) && (
-                        <motion.span
+                        <m.span
                           layoutId="nav-underline"
                           className="absolute bottom-0 left-0 right-0 h-[3px] bg-white"
                           transition={{ duration: 0.15, ease: "easeInOut" }}
@@ -281,7 +281,7 @@ export default function Navbar() {
 
                     <AnimatePresence>
                       {isActive && (
-                        <motion.div
+                        <m.div
                           initial={{ opacity: 0, y: -4 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -4 }}
@@ -330,7 +330,7 @@ export default function Navbar() {
                               </div>
                             ))}
                           </div>
-                        </motion.div>
+                        </m.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -375,7 +375,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div
+            <m.div
               initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
@@ -384,7 +384,7 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/40 z-[810] lg:hidden"
               onClick={() => { setMobileOpen(false); setMobileAccordion(null); }}
             />
-            <motion.div
+            <m.div
               ref={mobileMenuRef}
               id="mobile-menu"
               role="dialog"
@@ -462,10 +462,10 @@ export default function Navbar() {
                   Contact &rarr;
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>
-    </>
+    </LazyMotion>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { blurHashes } from "@/data/blurHashes";
@@ -140,6 +140,7 @@ export default function TabbedContent() {
   const active = tabData[activeTab];
 
   return (
+    <LazyMotion features={domAnimation}>
     <section className="py-16 sm:py-20 lg:py-28 xl:py-32 bg-[#F5F9FF]">
       {/* Intro Heading */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
@@ -249,7 +250,7 @@ export default function TabbedContent() {
 
               {/* Right: Content (animated on tab change, video is not) */}
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={`content-${activeTab}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -272,13 +273,13 @@ export default function TabbedContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </Link>
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
 
             {/* Bottom 3 Cards (animated on tab change) */}
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={`cards-${activeTab}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -301,11 +302,12 @@ export default function TabbedContent() {
                     <p className="text-gray-500 text-[14px] leading-relaxed">{card.text}</p>
                   </div>
                 ))}
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </div>
         </div>
       </div>
     </section>
+    </LazyMotion>
   );
 }
