@@ -230,7 +230,7 @@ export default function Navbar() {
                 }}
               />
               <span
-                className={`text-[14px] font-bold tracking-tight text-gray-400 transition-all duration-500 ease-out whitespace-nowrap overflow-hidden ${
+                className={`text-[14px] font-bold tracking-tight text-gray-300 transition-all duration-500 ease-out whitespace-nowrap overflow-hidden ${
                   isHome && !scrolled
                     ? `${logoRevealed ? "max-w-[200px] opacity-100" : "max-w-0 opacity-0"} lg:max-w-0 lg:opacity-0 lg:group-hover:max-w-[200px] lg:group-hover:opacity-100`
                     : "max-w-0 opacity-0"

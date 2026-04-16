@@ -300,7 +300,7 @@ export default function PrivacyPolicyPage() {
       <section className="bg-primary-800 pt-32 pb-14 sm:pt-36 sm:pb-16 md:pt-40 md:pb-20">
         <div className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20 2xl:px-28">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[13px] text-white/60 mb-6">
+          <nav className="flex items-center gap-2 text-[13px] text-white/90 mb-6">
             <Link
               href="/"
               className="hover:text-white transition-colors flex items-center gap-1"

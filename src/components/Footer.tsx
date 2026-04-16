@@ -161,7 +161,7 @@ export default function Footer() {
                 <Link href="/terms-and-conditions" className="hover:text-gray-300 transition-colors">Terms and Conditions</Link>
                 <Link href="/procurement" className="hover:text-gray-300 transition-colors">Procurement</Link>
               </div>
-              <p className="text-white/50 text-[13px] mt-1">Registered 501(c)(3). EIN: 21-2141112082</p>
+              <p className="text-white/80 text-[13px] mt-1">Registered 501(c)(3). EIN: 21-2141112082</p>
             </div>
           </div>
 

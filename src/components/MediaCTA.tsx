@@ -50,7 +50,7 @@ export default function MediaCTA() {
         </div>
 
         <div className="relative z-10 w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-10 sm:py-14 md:py-20 lg:py-24">
-          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60 mb-4">
+          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90 mb-4">
             Newsletter
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-light text-white mb-6 leading-tight">
@@ -66,7 +66,7 @@ export default function MediaCTA() {
               <p className="text-white text-[16px] font-medium">
                 Thank you — you&apos;re subscribed.
               </p>
-              <p className="text-white/60 text-[14px] mt-1">
+              <p className="text-white/90 text-[14px] mt-1">
                 Look out for our next issue in your inbox.
               </p>
             </div>
@@ -103,7 +103,7 @@ export default function MediaCTA() {
                   </svg>
                 </button>
               </div>
-              <p className="text-white/50 text-[12px] mt-3">
+              <p className="text-white/80 text-[12px] mt-3">
                 We never share your email. Unsubscribe anytime.
               </p>
             </form>

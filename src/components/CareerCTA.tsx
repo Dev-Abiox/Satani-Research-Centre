@@ -10,7 +10,7 @@ export default function CareerCTA() {
           <h2 className="text-2xl sm:text-3xl md:text-[2rem] lg:text-[2.5rem] font-semibold text-white mb-5 leading-tight">
             Shape the Future of Science
           </h2>
-          <p className="text-white/60 text-[15px] leading-relaxed mb-8 max-w-md">
+          <p className="text-white/90 text-[15px] leading-relaxed mb-8 max-w-md">
             At Satani Research Centre, our people are our greatest asset. Whether you are an
             experienced researcher or an aspiring scientist, we offer an environment where curiosity
             is celebrated, collaboration is the norm, and every contribution moves us closer to
