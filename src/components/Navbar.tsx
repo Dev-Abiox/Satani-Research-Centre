@@ -353,7 +353,7 @@ export default function Navbar() {
             {/* Mobile Hamburger */}
             <button
               ref={hamburgerRef}
-              className="lg:hidden relative z-[830] text-white p-2 -mr-2"
+              className="lg:hidden relative z-[830] text-white p-2 -mr-2 outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
@@ -402,7 +402,7 @@ export default function Navbar() {
                   <div key={item.label} className="border-b border-neutral-100">
                     <button
                       onClick={() => setMobileAccordion(mobileAccordion === item.label ? null : item.label)}
-                      className="flex items-center justify-between w-full py-4 text-[15px] font-semibold text-neutral-900 tracking-tight min-h-[48px]"
+                      className="flex items-center justify-between w-full py-4 text-[15px] font-semibold text-neutral-900 tracking-tight min-h-[48px] outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
                     >
                       {item.label}
                       <svg
