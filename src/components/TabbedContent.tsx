@@ -4,7 +4,7 @@ import { useState } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-
+import { blurHashes } from "@/data/blurHashes";
 
 const tabData = [
   {
@@ -238,6 +238,10 @@ export default function TabbedContent() {
                         }`}
                         sizes="(max-width: 1280px) 100vw, 50vw"
                         aria-hidden={!isActive}
+                        {...(blurHashes[tab.imageUrl] && {
+                          placeholder: "blur" as const,
+                          blurDataURL: blurHashes[tab.imageUrl],
+                        })}
                       />
                     );
                   })}

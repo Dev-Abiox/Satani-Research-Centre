@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   },
 };
 import Image from "next/image";
+import { blurHashes } from "@/data/blurHashes";
 import SectionWrapper from "@/components/SectionWrapper";
 import TeamMemberCard from "@/components/TeamMemberCard";
 
@@ -172,6 +173,8 @@ export default function TeamPage() {
           fill
           className="object-cover object-[center_25%]"
           sizes="100vw"
+          placeholder="blur"
+          blurDataURL={blurHashes["/images/Team/Team Banner.jpg"]}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />
@@ -210,6 +213,8 @@ export default function TeamPage() {
               fill
               className="object-cover"
               sizes="280px"
+              placeholder="blur"
+              blurDataURL={blurHashes["/images/Team/Abhijeet Satani.jpg"]}
             />
           </div>
 

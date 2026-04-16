@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SectionWrapper from "./SectionWrapper";
+import { blurHashes } from "@/data/blurHashes";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -187,6 +188,8 @@ export default function StatsSection() {
             fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, 70vw"
+            placeholder="blur"
+            blurDataURL={blurHashes[active.imageUrl]}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 lg:p-9">
