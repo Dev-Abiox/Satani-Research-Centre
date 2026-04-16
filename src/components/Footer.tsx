@@ -50,7 +50,7 @@ export default function Footer() {
 
           {/* Email Input */}
           <form className="flex w-full mb-2 relative" onSubmit={handleSubscribe}>
-            <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
+            <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" aria-hidden="true" aria-label="Do not fill this field" />
             <input
               type="email"
               aria-label="Email address"
@@ -128,7 +128,7 @@ export default function Footer() {
 
               {/* Email Input */}
               <form className="flex w-full max-w-[340px] lg:max-w-[400px] relative" onSubmit={handleSubscribe}>
-                <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
+                <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" aria-hidden="true" aria-label="Do not fill this field" />
                 <input
                   type="email"
                   aria-label="Email address"

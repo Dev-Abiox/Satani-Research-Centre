@@ -181,6 +181,8 @@ export default function ContactPage() {
                 className="absolute opacity-0 h-0 w-0 pointer-events-none"
                 tabIndex={-1}
                 autoComplete="off"
+                aria-hidden="true"
+                aria-label="Do not fill this field"
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 mb-8">
                 <div>

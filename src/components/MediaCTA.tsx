@@ -72,7 +72,7 @@ export default function MediaCTA() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="max-w-lg relative">
-              <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" />
+              <input type="text" name="_hp" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute opacity-0 h-0 w-0 pointer-events-none" tabIndex={-1} autoComplete="off" aria-hidden="true" aria-label="Do not fill this field" />
               <div className="flex flex-col lg:flex-row gap-3">
                 <input
                   type="email"
