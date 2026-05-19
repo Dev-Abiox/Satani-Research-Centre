@@ -11,6 +11,7 @@
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "framer-motion": "^12.38.0",
+    "jose": "^6.2.3",
     "lottie-react": "^2.4.1",
     "next": "^14.2.35",
     "nodemailer": "^8.0.5",

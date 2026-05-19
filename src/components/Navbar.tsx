@@ -18,6 +18,7 @@ const linkUrls: Record<string, string> = {
   "Projects": "/projects",
   "Resources": "/resources",
   "Conference": "/publications?section=conference",
+  "LabCalc Engine": "/lab-tools",
 };
 
 const getLinkUrl = (link: string) => linkUrls[link] || "#";
@@ -26,6 +27,7 @@ const menuPathPrefixes: Record<string, string[]> = {
   Company: ["/about", "/our-mission", "/team", "/careers"],
   Publications: ["/patents", "/publications", "/insights"],
   Projects: ["/research-topics", "/projects", "/resources"],
+  "Lab Tools": ["/lab-tools"],
 };
 
 type MenuLink = string | { label: string; comingSoon: true };
@@ -63,6 +65,15 @@ const menuItems: { label: string; columns: { heading: string; links: MenuLink[] 
       {
         heading: "",
         links: ["Research Topic", "Projects", "Resources"],
+      },
+    ],
+  },
+  {
+    label: "Lab Tools",
+    columns: [
+      {
+        heading: "Calculators",
+        links: ["LabCalc Engine"],
       },
     ],
   },
