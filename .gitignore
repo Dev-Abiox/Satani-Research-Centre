@@ -22,3 +22,6 @@ Thumbs.db
 
 # Local lab access storage (file-based for dev; swap for Vercel KV in prod)
 .lab-access-data.json
+
+.vercel
+.env*.local
