@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     }
 
     // Already approved? Set session cookie and tell client to redirect.
-    if (isApproved(cleanEmail)) {
+    if (await isApproved(cleanEmail)) {
       const sessionToken = await sign({ kind: "session", email: cleanEmail }, null);
       const res = NextResponse.json({
         success: true,
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     // New request → save + email owner with approve/deny links
     const requestId = randomUUID();
-    savePending(requestId, cleanEmail);
+    await savePending(requestId, cleanEmail);
 
     const approveToken = await sign(
       { kind: "decision", requestId, email: cleanEmail, action: "approve" },
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
       });
     } catch (emailErr) {
       // Roll back the pending entry so user can retry without creating duplicates
-      deletePending(requestId);
+      await deletePending(requestId);
       console.error("[lab-access/request] owner email failed, rolled back pending:", emailErr);
       return NextResponse.json(
         { success: false, error: "Could not send request. Please try again in a few minutes." },

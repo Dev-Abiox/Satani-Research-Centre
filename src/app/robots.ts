@@ -5,6 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/api/", "/lab-tools/launch"],
     },
     sitemap: "https://sataniresearchcentre.com/sitemap.xml",
   };

@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   if (!payload || payload.kind !== "launch") {
     return NextResponse.redirect(`${origin}/lab-tools?error=invalid`);
   }
-  if (!isApproved(payload.email)) {
+  if (!(await isApproved(payload.email))) {
     return NextResponse.redirect(`${origin}/lab-tools?error=revoked`);
   }
 

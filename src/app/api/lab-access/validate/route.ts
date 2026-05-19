@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     if (!payload || payload.kind !== "launch") {
       return withCors(NextResponse.json({ valid: false, reason: "invalid" }));
     }
-    if (!isApproved(payload.email)) {
+    if (!(await isApproved(payload.email))) {
       return withCors(NextResponse.json({ valid: false, reason: "revoked" }));
     }
     return withCors(NextResponse.json({ valid: true, email: payload.email }));

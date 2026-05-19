@@ -6,10 +6,31 @@ import { verify, SessionPayload } from "@/lib/lab-access/jwt";
 import { isApproved } from "@/lib/lab-access/storage";
 
 export const metadata: Metadata = {
-  title: "Lab Tools",
+  title: "Lab Tools | Satani Research Centre",
   description:
     "Access SRC's lab tools including LabCalc Engine — a professional offline laboratory calculation tool. Approval required.",
   alternates: { canonical: "/lab-tools" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Satani Research Centre",
+    title: "Lab Tools — LabCalc Engine | Satani Research Centre",
+    description:
+      "Request access to LabCalc Engine — a professional offline laboratory calculation tool for scientific data analysis.",
+    url: "https://sataniresearchcentre.com/lab-tools",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: "Satani Research Centre" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lab Tools — LabCalc Engine | Satani Research Centre",
+    description:
+      "Request access to LabCalc Engine — a professional offline laboratory calculation tool.",
+    images: ["/og-default.jpg"],
+  },
 };
 
 // Always render fresh — we read cookies on every request
@@ -22,7 +43,7 @@ async function getSessionEmail(): Promise<string | null> {
   if (!cookie?.value) return null;
   const payload = await verify<SessionPayload>(cookie.value);
   if (!payload || payload.kind !== "session") return null;
-  if (!isApproved(payload.email)) return null;
+  if (!(await isApproved(payload.email))) return null;
   return payload.email;
 }
 

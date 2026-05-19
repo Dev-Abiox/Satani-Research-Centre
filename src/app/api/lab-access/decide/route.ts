@@ -35,7 +35,7 @@ export async function GET(req: Request) {
     return htmlPage("Unknown action", `<h1 class="err">Unknown action</h1>`);
   }
 
-  const email = consumePending(payload.requestId);
+  const email = await consumePending(payload.requestId);
   if (!email) {
     return htmlPage(
       "Already handled",
@@ -44,7 +44,7 @@ export async function GET(req: Request) {
   }
 
   if (payload.action === "approve") {
-    approve(email);
+    await approve(email);
     const launchToken = await sign({ kind: "launch", email }, null);
     const revokeToken = await sign({ kind: "revoke", email }, null);
     try {

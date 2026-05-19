@@ -26,7 +26,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const wasApproved = revoke(payload.email);
+  const wasApproved = await revoke(payload.email);
   if (wasApproved) {
     return htmlPage(
       "Revoked",
