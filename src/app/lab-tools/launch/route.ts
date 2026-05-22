@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { verify, LaunchPayload, sign } from "@/lib/lab-access/jwt";
 import { isApproved } from "@/lib/lab-access/storage";
+import { getToolOrDefault } from "@/lib/lab-access/tools";
 
-const LABCALC_URL = process.env.LABCALC_URL || "https://lab-calc-engine.vercel.app";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 10; // ~10 years
 
 export async function GET(req: Request) {
@@ -18,15 +18,21 @@ export async function GET(req: Request) {
   if (!payload || payload.kind !== "launch") {
     return NextResponse.redirect(`${origin}/lab-tools?error=invalid`);
   }
-  if (!(await isApproved(payload.email))) {
-    return NextResponse.redirect(`${origin}/lab-tools?error=revoked`);
+
+  const tool = getToolOrDefault(payload.tool);
+
+  if (!(await isApproved(tool.storageKey, payload.email))) {
+    return NextResponse.redirect(`${origin}${tool.page}?error=revoked`);
   }
 
-  // Set the session cookie so future /lab-tools visits skip the form
-  const sessionToken = await sign({ kind: "session", email: payload.email }, null);
-  const res = NextResponse.redirect(LABCALC_URL);
+  // Set the session cookie so future tool-page visits skip the form
+  const sessionToken = await sign(
+    { kind: "session", tool: tool.slug, email: payload.email },
+    null
+  );
+  const res = NextResponse.redirect(tool.url);
   res.cookies.set({
-    name: "lab_access",
+    name: tool.cookieName,
     value: sessionToken,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

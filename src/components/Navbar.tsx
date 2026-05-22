@@ -19,6 +19,8 @@ const linkUrls: Record<string, string> = {
   "Resources": "/resources",
   "Conference": "/publications?section=conference",
   "LabCalc Engine": "/lab-tools",
+  "SRC Comparison": "/lab-tools/src-comparison",
+  "SRC CBC": "/lab-tools/src-cbc",
 };
 
 const getLinkUrl = (link: string) => linkUrls[link] || "#";
@@ -73,7 +75,7 @@ const menuItems: { label: string; columns: { heading: string; links: MenuLink[] 
     columns: [
       {
         heading: "Calculators",
-        links: ["LabCalc Engine"],
+        links: ["LabCalc Engine", "SRC Comparison", "SRC CBC"],
       },
     ],
   },

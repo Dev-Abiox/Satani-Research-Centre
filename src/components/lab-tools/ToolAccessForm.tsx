@@ -4,7 +4,14 @@ import { useState } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error" | "redirecting";
 
-export default function LabToolsForm() {
+type Props = {
+  /** Tool registry slug — sent to the API to scope the request. */
+  toolSlug: string;
+  /** Human-readable tool name, used in status messages. */
+  toolName: string;
+};
+
+export default function ToolAccessForm({ toolSlug, toolName }: Props) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -20,7 +27,12 @@ export default function LabToolsForm() {
       const r = await fetch("/api/lab-access/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, _honeypot: honeypot, _timestamp: mountedAt }),
+        body: JSON.stringify({
+          email,
+          tool: toolSlug,
+          _honeypot: honeypot,
+          _timestamp: mountedAt,
+        }),
       });
       const data = await r.json();
       if (!r.ok || !data.success) {
@@ -28,7 +40,7 @@ export default function LabToolsForm() {
         setErrorMsg(data.error || "Something went wrong. Please try again.");
         return;
       }
-      // Already approved → server set cookie, redirect to LabCalc
+      // Already approved → server set cookie, redirect to the tool
       if (data.approved && data.redirectUrl) {
         setRedirectUrl(data.redirectUrl);
         setStatus("redirecting");
@@ -57,10 +69,10 @@ export default function LabToolsForm() {
   if (status === "redirecting") {
     return (
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 sm:p-6">
-        <h3 className="text-[18px] font-semibold text-blue-900 mb-2">Opening LabCalc…</h3>
+        <h3 className="text-[18px] font-semibold text-blue-900 mb-2">Opening {toolName}…</h3>
         <p className="text-[15px] text-blue-800 leading-relaxed">
           If the redirect doesn&apos;t happen automatically,{" "}
-          <a href={redirectUrl} className="font-semibold underline">click here</a> to open LabCalc.
+          <a href={redirectUrl} className="font-semibold underline">click here</a> to open {toolName}.
         </p>
       </div>
     );

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import LabToolsForm from "./LabToolsForm";
 import AutoRedirect from "./AutoRedirect";
-import { verify, SessionPayload } from "@/lib/lab-access/jwt";
-import { isApproved } from "@/lib/lab-access/storage";
+import ToolAccessView from "@/components/lab-tools/ToolAccessView";
+import { getSessionEmail } from "@/lib/lab-access/session";
+import { LAB_TOOLS } from "@/lib/lab-access/tools";
+
+// This page is the access gate for LabCalc Engine. The two other lab tools
+// live at /lab-tools/[tool] and share the same components.
+const TOOL = LAB_TOOLS["labcalc-engine"];
 
 export const metadata: Metadata = {
   title: "Lab Tools | Satani Research Centre",
@@ -36,83 +39,23 @@ export const metadata: Metadata = {
 // Always render fresh — we read cookies on every request
 export const dynamic = "force-dynamic";
 
-const LABCALC_URL = process.env.LABCALC_URL || "https://lab-calc-engine.vercel.app";
-
-async function getSessionEmail(): Promise<string | null> {
-  const cookie = cookies().get("lab_access");
-  if (!cookie?.value) return null;
-  const payload = await verify<SessionPayload>(cookie.value);
-  if (!payload || payload.kind !== "session") return null;
-  if (!(await isApproved(payload.email))) return null;
-  return payload.email;
-}
-
-const ERROR_MESSAGES: Record<string, { title: string; body: string }> = {
-  missing: {
-    title: "Missing access token",
-    body: "The launch link is incomplete. Please use the link from your approval email, or request access below.",
-  },
-  invalid: {
-    title: "Invalid or expired link",
-    body: "This launch link is no longer valid. Please request access below.",
-  },
-  revoked: {
-    title: "Access revoked",
-    body: "Your access to LabCalc Engine has been revoked. If you believe this is a mistake, please request access again.",
-  },
-};
-
 type Props = { searchParams: { error?: string } };
 
 export default async function LabToolsPage({ searchParams }: Props) {
-  const sessionEmail = await getSessionEmail();
+  const sessionEmail = await getSessionEmail(TOOL);
 
-  // Returning approved user with valid cookie → silent redirect to LabCalc
+  // Returning approved user with valid cookie → silent redirect to the tool
   if (sessionEmail) {
-    return <AutoRedirect redirectUrl={LABCALC_URL} email={sessionEmail} />;
+    return (
+      <AutoRedirect
+        redirectUrl={TOOL.url}
+        email={sessionEmail}
+        toolName={TOOL.name}
+        toolSlug={TOOL.slug}
+      />
+    );
   }
 
-  const errorMsg = searchParams.error ? ERROR_MESSAGES[searchParams.error] : null;
-
   // First-time visitor or expired/invalid cookie → show request form
-  return (
-    <div className="min-h-screen bg-white pt-[64px]">
-      <section className="bg-accent">
-        <div className="max-w-8xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
-          <p className="text-white/90 text-[13px] sm:text-[14px] uppercase tracking-widest font-semibold mb-3">
-            Lab Tools
-          </p>
-          <h1 className="text-[28px] sm:text-[40px] md:text-[48px] lg:text-[56px] font-light text-white leading-[1.1] mb-6">
-            Request access to LabCalc Engine
-          </h1>
-          <p className="text-white/90 text-[16px] sm:text-[17px] lg:text-[18px] leading-[1.7] max-w-2xl">
-            LabCalc Engine is a professional, offline laboratory calculation tool built for scientific data analysis.
-            Enter sample readings, compute results using standard formulas, and export polished PDF reports — all
-            running 100% locally in your browser.
-          </p>
-        </div>
-      </section>
-
-      <section className="max-w-2xl mx-auto px-6 sm:px-10 py-16 lg:py-24">
-        {errorMsg && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-5 mb-8">
-            <h3 className="text-[16px] font-semibold text-red-900 mb-1">{errorMsg.title}</h3>
-            <p className="text-[14px] text-red-800 leading-relaxed">{errorMsg.body}</p>
-          </div>
-        )}
-
-        <h2 className="text-[22px] sm:text-[26px] font-bold text-neutral-900 mb-3">
-          How it works
-        </h2>
-        <ol className="space-y-2 text-[15px] sm:text-[16px] text-neutral-700 leading-[1.8] mb-10 list-decimal pl-6">
-          <li>Submit your email below.</li>
-          <li>If you&apos;ve already been approved, you&apos;ll be redirected instantly.</li>
-          <li>If you&apos;re new, we review each request manually and notify you by email once approved.</li>
-          <li>From then on, this device will remember you — no email needed on future visits.</li>
-        </ol>
-
-        <LabToolsForm />
-      </section>
-    </div>
-  );
+  return <ToolAccessView tool={TOOL} error={searchParams.error} />;
 }

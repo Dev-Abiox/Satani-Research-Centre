@@ -26,7 +26,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/careers",
     "/contact",
     "/procurement",
+    "/privacy-policy",
+    "/terms-and-conditions",
     "/lab-tools",
+    "/lab-tools/src-comparison",
+    "/lab-tools/src-cbc",
   ];
 
   const staticPages = routes.map((route) => ({

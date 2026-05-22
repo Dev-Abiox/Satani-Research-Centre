@@ -4,11 +4,11 @@ import { deletePending, isApproved, savePending } from "@/lib/lab-access/storage
 import { sign } from "@/lib/lab-access/jwt";
 import { sendOwnerDecisionRequest } from "@/lib/lab-access/email";
 import { isRateLimited } from "@/lib/lab-access/rate-limit";
+import { getTool } from "@/lib/lab-access/tools";
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
 const ADMIN_EMAIL = process.env.LAB_ACCESS_ADMIN_EMAIL || process.env.SMTP_USER!;
-const LABCALC_URL = process.env.LABCALC_URL || "https://lab-calc-engine.vercel.app";
 
 // ~10 years; browsers will silently cap to ~400 days but intent is "until revoked"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 10;
@@ -16,11 +16,20 @@ const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 10;
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, _honeypot, _timestamp } = body || {};
+    const { email, tool: toolSlug, _honeypot, _timestamp } = body || {};
 
-    // Bot checks
+    // Bot checks. The honeypot is the primary defense; the timestamp guard
+    // only rejects near-instant programmatic submits. Keep the window short —
+    // a real user can fill one email field and submit in well under 3s, and a
+    // false positive here silently drops a legitimate request.
     if (_honeypot) return NextResponse.json({ success: true });
-    if (_timestamp && Date.now() - _timestamp < 3000) return NextResponse.json({ success: true });
+    if (_timestamp && Date.now() - _timestamp < 1200) return NextResponse.json({ success: true });
+
+    // Resolve which tool this request is for
+    const tool = getTool(typeof toolSlug === "string" ? toolSlug : null);
+    if (!tool) {
+      return NextResponse.json({ success: false, error: "Unknown tool" }, { status: 400 });
+    }
 
     // Email validation
     if (typeof email !== "string" || !EMAIL_RE.test(email) || email.length > 254) {
@@ -28,12 +37,12 @@ export async function POST(req: Request) {
     }
     const cleanEmail = email.trim().toLowerCase();
 
-    // Rate limit
+    // Rate limit (per tool + IP)
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
       "unknown";
-    if (isRateLimited(ip)) {
+    if (isRateLimited(tool.slug, ip)) {
       return NextResponse.json(
         { success: false, error: "Too many requests. Please try again later." },
         { status: 429 }
@@ -41,15 +50,18 @@ export async function POST(req: Request) {
     }
 
     // Already approved? Set session cookie and tell client to redirect.
-    if (await isApproved(cleanEmail)) {
-      const sessionToken = await sign({ kind: "session", email: cleanEmail }, null);
+    if (await isApproved(tool.storageKey, cleanEmail)) {
+      const sessionToken = await sign(
+        { kind: "session", tool: tool.slug, email: cleanEmail },
+        null
+      );
       const res = NextResponse.json({
         success: true,
         approved: true,
-        redirectUrl: LABCALC_URL,
+        redirectUrl: tool.url,
       });
       res.cookies.set({
-        name: "lab_access",
+        name: tool.cookieName,
         value: sessionToken,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -62,14 +74,14 @@ export async function POST(req: Request) {
 
     // New request → save + email owner with approve/deny links
     const requestId = randomUUID();
-    await savePending(requestId, cleanEmail);
+    await savePending(tool.storageKey, requestId, cleanEmail);
 
     const approveToken = await sign(
-      { kind: "decision", requestId, email: cleanEmail, action: "approve" },
+      { kind: "decision", tool: tool.slug, requestId, email: cleanEmail, action: "approve" },
       "48h"
     );
     const denyToken = await sign(
-      { kind: "decision", requestId, email: cleanEmail, action: "deny" },
+      { kind: "decision", tool: tool.slug, requestId, email: cleanEmail, action: "deny" },
       "48h"
     );
 
@@ -77,12 +89,13 @@ export async function POST(req: Request) {
       await sendOwnerDecisionRequest({
         to: ADMIN_EMAIL,
         userEmail: cleanEmail,
+        toolName: tool.name,
         approveToken,
         denyToken,
       });
     } catch (emailErr) {
       // Roll back the pending entry so user can retry without creating duplicates
-      await deletePending(requestId);
+      await deletePending(tool.storageKey, requestId);
       console.error("[lab-access/request] owner email failed, rolled back pending:", emailErr);
       return NextResponse.json(
         { success: false, error: "Could not send request. Please try again in a few minutes." },

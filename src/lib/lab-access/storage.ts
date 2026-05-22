@@ -3,14 +3,21 @@
 //   • Local dev fallback:   JSON file at .lab-access-data.json
 //
 // Switches automatically based on env presence so the same code runs in both.
+//
+// Every function takes a `storageKey` (from the tool registry) so each tool
+// keeps a fully independent pending/approved namespace:
+//   Redis:  `${storageKey}:approved`  (set)   `${storageKey}:pending:<id>` (string, TTL)
+//   File:   data[storageKey] = { pending, approved }
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, resolve } from "path";
 import { Redis } from "@upstash/redis";
 
 const PENDING_TTL_SECONDS = 48 * 60 * 60;
-const APPROVED_SET = "lab:approved";
-const PENDING_PREFIX = "lab:pending:";
+
+const approvedSetKey = (storageKey: string) => `${storageKey}:approved`;
+const pendingItemKey = (storageKey: string, requestId: string) =>
+  `${storageKey}:pending:${requestId}`;
 
 const VERBOSE = process.env.NODE_ENV !== "production";
 function vlog(...args: unknown[]): void {
@@ -29,25 +36,38 @@ const redis: Redis | null = HAS_KV
 
 // ─── File-backed fallback (local dev only) ────────────────────────────────
 
-type Shape = {
+type ToolData = {
   pending: Record<string, { email: string; createdAt: number }>;
   approved: string[];
 };
+// Keyed by storageKey so multiple tools share one file.
+type Shape = Record<string, ToolData>;
 
 const FILE = resolve(process.cwd(), ".lab-access-data.json");
 const PENDING_TTL_MS = PENDING_TTL_SECONDS * 1000;
 
+function emptyToolData(): ToolData {
+  return { pending: {}, approved: [] };
+}
+
 function fileLoad(): Shape {
   try {
-    if (!existsSync(FILE)) return { pending: {}, approved: [] };
+    if (!existsSync(FILE)) return {};
     const parsed = JSON.parse(readFileSync(FILE, "utf-8"));
-    return {
-      pending: parsed.pending ?? {},
-      approved: Array.isArray(parsed.approved) ? parsed.approved : [],
-    };
+    if (!parsed || typeof parsed !== "object") return {};
+    // Legacy single-tool shape ({ pending, approved }) → migrate under "lab".
+    if (Array.isArray(parsed.approved) || (parsed.pending && !parsed.lab)) {
+      return {
+        lab: {
+          pending: parsed.pending ?? {},
+          approved: Array.isArray(parsed.approved) ? parsed.approved : [],
+        },
+      };
+    }
+    return parsed as Shape;
   } catch (e) {
     console.error("[lab-access/storage] file load failed:", e);
-    return { pending: {}, approved: [] };
+    return {};
   }
 }
 
@@ -60,44 +80,58 @@ function fileSave(data: Shape): void {
   }
 }
 
+function fileTool(data: Shape, storageKey: string): ToolData {
+  if (!data[storageKey]) data[storageKey] = emptyToolData();
+  return data[storageKey];
+}
+
 // ─── Public API (same signatures for both backends) ───────────────────────
 
-export async function savePending(requestId: string, email: string): Promise<void> {
+export async function savePending(
+  storageKey: string,
+  requestId: string,
+  email: string
+): Promise<void> {
   const lower = email.toLowerCase();
   if (redis) {
-    await redis.set(`${PENDING_PREFIX}${requestId}`, lower, { ex: PENDING_TTL_SECONDS });
+    await redis.set(pendingItemKey(storageKey, requestId), lower, { ex: PENDING_TTL_SECONDS });
   } else {
     const data = fileLoad();
-    data.pending[requestId] = { email: lower, createdAt: Date.now() };
+    fileTool(data, storageKey).pending[requestId] = { email: lower, createdAt: Date.now() };
     fileSave(data);
   }
-  vlog(`[lab-access] pending saved: ${lower} (${requestId})`);
+  vlog(`[lab-access] pending saved: ${lower} (${storageKey}/${requestId})`);
 }
 
-export async function deletePending(requestId: string): Promise<void> {
+export async function deletePending(storageKey: string, requestId: string): Promise<void> {
   if (redis) {
-    await redis.del(`${PENDING_PREFIX}${requestId}`);
+    await redis.del(pendingItemKey(storageKey, requestId));
   } else {
     const data = fileLoad();
-    if (!(requestId in data.pending)) return;
-    delete data.pending[requestId];
+    const tool = data[storageKey];
+    if (!tool || !(requestId in tool.pending)) return;
+    delete tool.pending[requestId];
     fileSave(data);
   }
-  vlog(`[lab-access] pending deleted: ${requestId}`);
+  vlog(`[lab-access] pending deleted: ${storageKey}/${requestId}`);
 }
 
-export async function consumePending(requestId: string): Promise<string | null> {
+export async function consumePending(
+  storageKey: string,
+  requestId: string
+): Promise<string | null> {
   if (redis) {
-    const email = await redis.get<string>(`${PENDING_PREFIX}${requestId}`);
+    const email = await redis.get<string>(pendingItemKey(storageKey, requestId));
     if (!email) return null;
-    await redis.del(`${PENDING_PREFIX}${requestId}`);
-    vlog(`[lab-access] pending consumed: ${email}`);
+    await redis.del(pendingItemKey(storageKey, requestId));
+    vlog(`[lab-access] pending consumed: ${email} (${storageKey})`);
     return email;
   }
   const data = fileLoad();
-  const entry = data.pending[requestId];
+  const tool = data[storageKey];
+  const entry = tool?.pending[requestId];
   if (!entry) return null;
-  delete data.pending[requestId];
+  delete tool.pending[requestId];
   if (Date.now() - entry.createdAt > PENDING_TTL_MS) {
     fileSave(data);
     return null;
@@ -106,44 +140,46 @@ export async function consumePending(requestId: string): Promise<string | null> 
   return entry.email;
 }
 
-export async function approve(email: string): Promise<void> {
+export async function approve(storageKey: string, email: string): Promise<void> {
   const lower = email.toLowerCase();
   if (redis) {
-    await redis.sadd(APPROVED_SET, lower);
+    await redis.sadd(approvedSetKey(storageKey), lower);
   } else {
     const data = fileLoad();
-    if (!data.approved.includes(lower)) {
-      data.approved.push(lower);
+    const tool = fileTool(data, storageKey);
+    if (!tool.approved.includes(lower)) {
+      tool.approved.push(lower);
       fileSave(data);
     }
   }
-  vlog(`[lab-access] approved: ${lower}`);
+  vlog(`[lab-access] approved: ${lower} (${storageKey})`);
 }
 
-export async function isApproved(email: string): Promise<boolean> {
+export async function isApproved(storageKey: string, email: string): Promise<boolean> {
   const lower = email.toLowerCase();
   let result: boolean;
   if (redis) {
-    result = (await redis.sismember(APPROVED_SET, lower)) === 1;
+    result = (await redis.sismember(approvedSetKey(storageKey), lower)) === 1;
   } else {
-    result = fileLoad().approved.includes(lower);
+    result = fileLoad()[storageKey]?.approved.includes(lower) ?? false;
   }
-  vlog(`[lab-access] isApproved(${lower}) = ${result}`);
+  vlog(`[lab-access] isApproved(${storageKey}, ${lower}) = ${result}`);
   return result;
 }
 
-export async function revoke(email: string): Promise<boolean> {
+export async function revoke(storageKey: string, email: string): Promise<boolean> {
   const lower = email.toLowerCase();
   if (redis) {
-    const removed = await redis.srem(APPROVED_SET, lower);
-    vlog(`[lab-access] revoked: ${lower} (removed=${removed})`);
+    const removed = await redis.srem(approvedSetKey(storageKey), lower);
+    vlog(`[lab-access] revoked: ${lower} (${storageKey}, removed=${removed})`);
     return removed === 1;
   }
   const data = fileLoad();
-  const idx = data.approved.indexOf(lower);
-  if (idx === -1) return false;
-  data.approved.splice(idx, 1);
+  const tool = data[storageKey];
+  const idx = tool?.approved.indexOf(lower) ?? -1;
+  if (!tool || idx === -1) return false;
+  tool.approved.splice(idx, 1);
   fileSave(data);
-  vlog(`[lab-access] revoked: ${lower}`);
+  vlog(`[lab-access] revoked: ${lower} (${storageKey})`);
   return true;
 }

@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
+import { getToolOrDefault } from "@/lib/lab-access/tools";
 
 export async function GET(req: Request) {
-  const origin = new URL(req.url).origin;
-  const res = NextResponse.redirect(`${origin}/lab-tools`);
+  const url = new URL(req.url);
+  const tool = getToolOrDefault(url.searchParams.get("tool"));
+  const res = NextResponse.redirect(`${url.origin}${tool.page}`);
   res.cookies.set({
-    name: "lab_access",
+    name: tool.cookieName,
     value: "",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revoke } from "@/lib/lab-access/storage";
 import { verify, RevokePayload } from "@/lib/lab-access/jwt";
+import { getToolOrDefault } from "@/lib/lab-access/tools";
 
 function htmlPage(title: string, body: string): Response {
   return new NextResponse(
@@ -26,15 +27,17 @@ export async function GET(req: Request) {
     );
   }
 
-  const wasApproved = await revoke(payload.email);
+  const tool = getToolOrDefault(payload.tool);
+
+  const wasApproved = await revoke(tool.storageKey, payload.email);
   if (wasApproved) {
     return htmlPage(
       "Revoked",
-      `<h1 class="ok">Revoked</h1><p><strong>${payload.email}</strong> no longer has access to LabCalc Engine.</p>`
+      `<h1 class="ok">Revoked</h1><p><strong>${payload.email}</strong> no longer has access to ${tool.name}.</p>`
     );
   }
   return htmlPage(
     "Not approved",
-    `<h1>Not currently approved</h1><p><strong>${payload.email}</strong> is not on the approved list (already revoked, or never approved).</p>`
+    `<h1>Not currently approved</h1><p><strong>${payload.email}</strong> is not on the ${tool.name} approved list (already revoked, or never approved).</p>`
   );
 }

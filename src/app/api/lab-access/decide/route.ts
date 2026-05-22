@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { approve, consumePending } from "@/lib/lab-access/storage";
 import { sign, verify, DecisionPayload } from "@/lib/lab-access/jwt";
-import {
-  sendUserApproval,
-  sendUserRejection,
-} from "@/lib/lab-access/email";
+import { sendUserApproval, sendUserRejection } from "@/lib/lab-access/email";
+import { getToolOrDefault } from "@/lib/lab-access/tools";
 
 const ADMIN_EMAIL = process.env.LAB_ACCESS_ADMIN_EMAIL || process.env.SMTP_USER!;
 
@@ -35,7 +33,9 @@ export async function GET(req: Request) {
     return htmlPage("Unknown action", `<h1 class="err">Unknown action</h1>`);
   }
 
-  const email = await consumePending(payload.requestId);
+  const tool = getToolOrDefault(payload.tool);
+
+  const email = await consumePending(tool.storageKey, payload.requestId);
   if (!email) {
     return htmlPage(
       "Already handled",
@@ -44,12 +44,14 @@ export async function GET(req: Request) {
   }
 
   if (payload.action === "approve") {
-    await approve(email);
-    const launchToken = await sign({ kind: "launch", email }, null);
-    const revokeToken = await sign({ kind: "revoke", email }, null);
+    await approve(tool.storageKey, email);
+    const launchToken = await sign({ kind: "launch", tool: tool.slug, email }, null);
+    const revokeToken = await sign({ kind: "revoke", tool: tool.slug, email }, null);
     try {
       await sendUserApproval({
         to: email,
+        toolName: tool.name,
+        toolPath: tool.page,
         launchToken,
         revokeToken,
         ownerEmail: ADMIN_EMAIL,
@@ -59,13 +61,13 @@ export async function GET(req: Request) {
     }
     return htmlPage(
       "Approved",
-      `<h1 class="ok">✅ Approved</h1><p><strong>${email}</strong> has been notified and granted access to LabCalc Engine.</p><p>You'll also receive a separate email with a permanent revoke link in case you need to remove their access later.</p>`
+      `<h1 class="ok">✅ Approved</h1><p><strong>${email}</strong> has been notified and granted access to ${tool.name}.</p><p>You'll also receive a separate email with a permanent revoke link in case you need to remove their access later.</p>`
     );
   }
 
   // action === "deny" (the only remaining valid value)
   try {
-    await sendUserRejection({ to: email });
+    await sendUserRejection({ to: email, toolName: tool.name });
   } catch (e) {
     console.error("[lab-access/decide] rejection email failed", e);
   }
