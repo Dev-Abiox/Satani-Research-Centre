@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Procurement | Satani Research Centre",
+  // Root layout's title template appends " | Satani Research Centre".
+  title: "Procurement",
   description:
     "Learn about doing business with Satani Research Centre. Find RFPs, ITBs, and partnership opportunities.",
   alternates: { canonical: "/procurement" },

@@ -17,6 +17,9 @@ const nextConfig = {
     // and not /index — avoids path-to-regexp ordering ambiguity and CDN
     // cache poisoning from an earlier buggy wildcard rule.
     return [
+      // LabCalc Engine moved to /lab-tools/labcalc-engine so all three lab
+      // tools share the consistent /lab-tools/<slug> URL pattern.
+      { source: "/lab-tools", destination: "/lab-tools/labcalc-engine", permanent: true },
       { source: "/index.html", destination: "/", permanent: true },
       { source: "/about.html", destination: "/about", permanent: true },
       { source: "/contact.html", destination: "/contact", permanent: true },

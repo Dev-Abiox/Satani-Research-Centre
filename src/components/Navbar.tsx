@@ -18,7 +18,7 @@ const linkUrls: Record<string, string> = {
   "Projects": "/projects",
   "Resources": "/resources",
   "Conference": "/publications?section=conference",
-  "LabCalc Engine": "/lab-tools",
+  "LabCalc Engine": "/lab-tools/labcalc-engine",
   "SRC Comparison": "/lab-tools/src-comparison",
   "SRC CBC": "/lab-tools/src-cbc",
 };

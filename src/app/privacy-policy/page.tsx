@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Satani Research Centre",
+  // Root layout's title template appends " | Satani Research Centre".
+  title: "Privacy Policy",
   description:
     "Learn how Satani Research Centre collects, uses, and protects your information when you visit our website.",
   alternates: { canonical: "/privacy-policy" },

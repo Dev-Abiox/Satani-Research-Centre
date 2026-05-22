@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | Satani Research Centre",
+  // Root layout's title template appends " | Satani Research Centre".
+  title: "Terms and Conditions",
   description:
     "Terms and Conditions governing the use of the Satani Research Centre website.",
   alternates: { canonical: "/terms-and-conditions" },

@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/procurement",
     "/privacy-policy",
     "/terms-and-conditions",
-    "/lab-tools",
+    "/lab-tools/labcalc-engine",
     "/lab-tools/src-comparison",
     "/lab-tools/src-cbc",
   ];

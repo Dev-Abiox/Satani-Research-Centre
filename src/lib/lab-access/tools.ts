@@ -43,7 +43,7 @@ export const LAB_TOOLS: Record<string, LabTool> = {
     // sessions keep working untouched.
     cookieName: "lab_access",
     storageKey: "lab",
-    page: "/lab-tools",
+    page: "/lab-tools/labcalc-engine",
     tagline:
       "LabCalc Engine is a professional, offline laboratory calculation tool built for scientific data analysis. Enter sample readings, compute results using standard formulas, and export polished PDF reports — all running 100% locally in your browser.",
     seoDescription:

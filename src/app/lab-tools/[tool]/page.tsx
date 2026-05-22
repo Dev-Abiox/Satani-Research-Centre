@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import AutoRedirect from "../AutoRedirect";
 import ToolAccessView from "@/components/lab-tools/ToolAccessView";
 import { getSessionEmail } from "@/lib/lab-access/session";
-import { getTool, DEFAULT_TOOL_SLUG } from "@/lib/lab-access/tools";
+import { getTool } from "@/lib/lab-access/tools";
 
 // Always render fresh — we read cookies on every request
 export const dynamic = "force-dynamic";
@@ -15,14 +15,14 @@ type Props = {
 
 export function generateMetadata({ params }: Props): Metadata {
   const tool = getTool(params.tool);
-  if (!tool || tool.slug === DEFAULT_TOOL_SLUG) {
-    return { title: "Lab Tools | Satani Research Centre" };
-  }
+  if (!tool) return {};
+
   const ogTitle = `Lab Tools — ${tool.name} | Satani Research Centre`;
   const description = tool.seoDescription;
   const imageAlt = `${tool.name} — Satani Research Centre`;
   return {
-    title: `${tool.name} | Satani Research Centre`,
+    // Root layout's title template appends " | Satani Research Centre".
+    title: tool.name,
     description,
     alternates: { canonical: tool.page },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
@@ -44,9 +44,6 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export default async function ToolPage({ params, searchParams }: Props) {
-  // LabCalc Engine has its own canonical page at /lab-tools.
-  if (params.tool === DEFAULT_TOOL_SLUG) permanentRedirect("/lab-tools");
-
   const tool = getTool(params.tool);
   if (!tool) notFound();
 
