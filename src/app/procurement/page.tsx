@@ -50,7 +50,7 @@ export default function ProcurementPage() {
             <span className="text-white">Procurement</span>
           </nav>
 
-          <h1 className="text-3xl sm:text-4xl md:text-[44px] font-light text-white leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-[44px] lg:text-[52px] xl:text-[60px] font-light text-white leading-tight tracking-tight">
             Procurement
           </h1>
           <p className="mt-4 text-white/70 text-[15px]">

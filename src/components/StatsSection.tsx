@@ -159,7 +159,7 @@ export default function StatsSection() {
       </div>
 
       {/* Two Column Layout — CSS transition instead of AnimatePresence */}
-      <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] md:grid-cols-[300px_1fr] lg:grid-cols-[380px_1fr] gap-6 sm:gap-8 md:gap-10 lg:gap-14 mb-14 sm:mb-16 lg:mb-20 items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,260px)_1fr] md:grid-cols-[minmax(0,300px)_1fr] lg:grid-cols-[380px_1fr] gap-6 sm:gap-8 md:gap-10 lg:gap-14 mb-14 sm:mb-16 lg:mb-20 items-center">
         {/* Left: Stats — show only first stat on mobile/tablet, both on desktop */}
         <div
           key={`stats-${activeTab}`}

@@ -204,7 +204,7 @@ export default function TeamPage() {
           <hr className="border-neutral-200 mt-6" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-14 items-stretch mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] gap-8 md:gap-10 lg:gap-14 items-stretch mt-10">
           {/* Photo */}
           <div className="relative w-full max-w-[240px] sm:max-w-[280px] mx-auto lg:mx-0 aspect-square lg:aspect-auto lg:h-full rounded-xl overflow-hidden bg-primary-50">
             <Image

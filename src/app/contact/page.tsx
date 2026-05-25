@@ -150,7 +150,7 @@ export default function ContactPage() {
       </div>
 
       <div className="max-w-8xl mx-auto px-6 sm:px-10 lg:px-16 pt-6 pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_340px] gap-10 lg:gap-16 xl:gap-20">
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-10 xl:gap-20">
           {/* Left Column — Form */}
           <div>
             <h1 className="text-[28px] sm:text-[36px] md:text-[44px] lg:text-[48px] font-light text-neutral-900 mb-6 sm:mb-8 leading-tight">
