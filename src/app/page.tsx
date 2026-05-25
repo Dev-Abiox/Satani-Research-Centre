@@ -15,7 +15,7 @@ const CareerCTA = dynamic(() => import("@/components/CareerCTA"), { ssr: false }
 export const metadata: Metadata = {
   // `absolute` bypasses the root layout's "%s | Satani Research Centre"
   // template so the homepage title isn't doubled.
-  title: { absolute: "Satani Research Centre — Advancing Biomedical Research" },
+  title: { absolute: "Satani Research Centre" },
   description:
     "Innovating at the convergence of biosignals, behaviour, and biomedical systems. Explore our research, publications, and projects.",
   alternates: { canonical: "/" },

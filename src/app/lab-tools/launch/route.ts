@@ -30,7 +30,19 @@ export async function GET(req: Request) {
     { kind: "session", tool: tool.slug, email: payload.email },
     null
   );
-  const res = NextResponse.redirect(tool.url);
+
+  // Sign a short-lived access token that the external tool app validates
+  // (via /api/lab-access/validate) on first load and re-validates every
+  // 15 min. Bounding the TTL bounds the tool-app session — and revocation
+  // surfaces here too because validate re-checks storage on every call.
+  const accessToken = await sign(
+    { kind: "launch", tool: tool.slug, email: payload.email },
+    "8h"
+  );
+  const dest = new URL(tool.url);
+  dest.searchParams.set("access", accessToken);
+
+  const res = NextResponse.redirect(dest.toString());
   res.cookies.set({
     name: tool.cookieName,
     value: sessionToken,

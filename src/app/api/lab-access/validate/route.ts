@@ -15,11 +15,20 @@ const ALLOWED_ORIGINS = new Set(
   })
 );
 
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  // Dev-only: allow any localhost / 127.0.0.1 origin for local tool testing.
+  if (process.env.NODE_ENV !== "production" && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    return true;
+  }
+  return false;
+}
+
 function withCors(res: NextResponse, origin: string | null): NextResponse {
   res.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.headers.set("Access-Control-Allow-Headers", "Content-Type");
   res.headers.set("Vary", "Origin");
-  if (origin && ALLOWED_ORIGINS.has(origin)) {
+  if (origin && isAllowedOrigin(origin)) {
     res.headers.set("Access-Control-Allow-Origin", origin);
   }
   return res;
