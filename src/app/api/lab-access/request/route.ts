@@ -55,10 +55,18 @@ export async function POST(req: Request) {
         { kind: "session", tool: tool.slug, email: cleanEmail },
         null
       );
+      // The external tool app's AccessGate requires a signed access token in
+      // the URL — without it the gate bounces back here and we redirect-loop.
+      const accessToken = await sign(
+        { kind: "launch", tool: tool.slug, email: cleanEmail },
+        "8h"
+      );
+      const dest = new URL(tool.url);
+      dest.searchParams.set("access", accessToken);
       const res = NextResponse.json({
         success: true,
         approved: true,
-        redirectUrl: tool.url,
+        redirectUrl: dest.toString(),
       });
       res.cookies.set({
         name: tool.cookieName,

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import AutoRedirect from "../AutoRedirect";
 import ToolAccessView from "@/components/lab-tools/ToolAccessView";
 import { getSessionEmail } from "@/lib/lab-access/session";
+import { sign } from "@/lib/lab-access/jwt";
 import { getTool } from "@/lib/lab-access/tools";
 
 // Always render fresh — we read cookies on every request
@@ -61,11 +62,19 @@ export default async function ToolPage({ params, searchParams }: Props) {
 
   const sessionEmail = await getSessionEmail(tool);
 
-  // Returning approved user with valid cookie → silent redirect to the tool
+  // Returning approved user with valid cookie → silent redirect to the tool.
+  // Mint a launch token so the external app's AccessGate accepts the request
+  // (without it, the gate bounces back here → redirect loop).
   if (sessionEmail) {
+    const accessToken = await sign(
+      { kind: "launch", tool: tool.slug, email: sessionEmail },
+      "8h"
+    );
+    const dest = new URL(tool.url);
+    dest.searchParams.set("access", accessToken);
     return (
       <AutoRedirect
-        redirectUrl={tool.url}
+        redirectUrl={dest.toString()}
         email={sessionEmail}
         toolName={tool.name}
         toolSlug={tool.slug}
