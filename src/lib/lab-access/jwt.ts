@@ -4,7 +4,8 @@ const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "dev-secret-do
 
 // Every payload carries a `tool` slug so a token issued for one tool can never
 // be used to gain access to another. Legacy tokens signed before multi-tool
-// support have no `tool` field — consumers default it to "labcalc-engine".
+// support have no `tool` field — consumers default it to DEFAULT_TOOL_SLUG
+// from ./tools (and normalize legacy slugs via LEGACY_SLUG_MAP).
 
 export type DecisionPayload = {
   kind: "decision";

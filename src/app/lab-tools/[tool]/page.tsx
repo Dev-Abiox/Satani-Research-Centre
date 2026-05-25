@@ -24,14 +24,26 @@ export function generateMetadata({ params }: Props): Metadata {
     // Root layout's title template appends " | Satani Research Centre".
     title: tool.name,
     description,
+    keywords: tool.keywords,
     alternates: { canonical: tool.page },
-    robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
+    },
     openGraph: {
       type: "website",
       siteName: "Satani Research Centre",
       title: ogTitle,
       description,
       url: `https://sataniresearchcentre.com${tool.page}`,
+      locale: "en_US",
       images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: imageAlt }],
     },
     twitter: {

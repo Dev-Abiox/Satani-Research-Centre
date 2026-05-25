@@ -3,6 +3,14 @@ import { articles } from "@/data/insights";
 import { resources } from "@/data/resources";
 
 const BUILD_DATE = new Date("2026-04-13");
+// Pages renamed/relocated in this release — give them a fresher lastmod so
+// search engines pick up the new canonical URLs and titles on next crawl.
+const LAB_TOOLS_LASTMOD = new Date("2026-05-25");
+const LAB_TOOL_ROUTES = new Set([
+  "/lab-tools/src-exvivo-spectra",
+  "/lab-tools/src-exvivo-hemomatrix",
+  "/lab-tools/src-exvivo-hemodata",
+]);
 
 function parseDate(input: string | undefined): Date {
   if (!input) return BUILD_DATE;
@@ -28,14 +36,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/procurement",
     "/privacy-policy",
     "/terms-and-conditions",
-    "/lab-tools/labcalc-engine",
-    "/lab-tools/src-comparison",
-    "/lab-tools/src-cbc",
+    "/lab-tools/src-exvivo-spectra",
+    "/lab-tools/src-exvivo-hemomatrix",
+    "/lab-tools/src-exvivo-hemodata",
   ];
 
   const staticPages = routes.map((route) => ({
     url: `${base}${route}`,
-    lastModified: BUILD_DATE,
+    lastModified: LAB_TOOL_ROUTES.has(route) ? LAB_TOOLS_LASTMOD : BUILD_DATE,
     changeFrequency: (route === "" ? "weekly" : "monthly") as "weekly" | "monthly",
     priority: route === "" ? 1 : 0.8,
   }));

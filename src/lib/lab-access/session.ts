@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { verify, SessionPayload } from "./jwt";
 import { isApproved } from "./storage";
-import { LabTool, DEFAULT_TOOL_SLUG } from "./tools";
+import { LabTool, DEFAULT_TOOL_SLUG, LEGACY_SLUG_MAP } from "./tools";
 
 /**
  * Resolve the signed-in email for a given tool from its session cookie.
@@ -16,8 +16,12 @@ export async function getSessionEmail(tool: LabTool): Promise<string | null> {
   if (!payload || payload.kind !== "session") return null;
 
   // A session is only valid for the tool it was issued for. Legacy cookies
-  // signed before multi-tool support carry no `tool` → treat as LabCalc.
-  const cookieTool = payload.tool || DEFAULT_TOOL_SLUG;
+  // signed before multi-tool support carry no `tool` → treat as the default
+  // tool. Cookies signed with the pre-rename slugs (labcalc-engine,
+  // src-comparison, src-cbc) are normalized through LEGACY_SLUG_MAP so
+  // existing sessions keep working after the URL rename.
+  const rawTool = payload.tool || DEFAULT_TOOL_SLUG;
+  const cookieTool = LEGACY_SLUG_MAP[rawTool] ?? rawTool;
   if (cookieTool !== tool.slug) return null;
 
   if (!(await isApproved(tool.storageKey, payload.email))) return null;

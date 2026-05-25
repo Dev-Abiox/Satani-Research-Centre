@@ -11,12 +11,12 @@ export async function GET(req: Request) {
   const origin = url.origin;
 
   if (!token) {
-    return NextResponse.redirect(`${origin}/lab-tools/labcalc-engine?error=missing`);
+    return NextResponse.redirect(`${origin}/lab-tools/src-exvivo-spectra?error=missing`);
   }
 
   const payload = await verify<LaunchPayload>(token);
   if (!payload || payload.kind !== "launch") {
-    return NextResponse.redirect(`${origin}/lab-tools/labcalc-engine?error=invalid`);
+    return NextResponse.redirect(`${origin}/lab-tools/src-exvivo-spectra?error=invalid`);
   }
 
   const tool = getToolOrDefault(payload.tool);

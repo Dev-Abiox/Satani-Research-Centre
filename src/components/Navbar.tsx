@@ -18,9 +18,9 @@ const linkUrls: Record<string, string> = {
   "Projects": "/projects",
   "Resources": "/resources",
   "Conference": "/publications?section=conference",
-  "LabCalc Engine": "/lab-tools/labcalc-engine",
-  "SRC Comparison": "/lab-tools/src-comparison",
-  "SRC CBC": "/lab-tools/src-cbc",
+  "SRC Ex-vivo Spectra": "/lab-tools/src-exvivo-spectra",
+  "SRC Ex-vivo HemoMatrix": "/lab-tools/src-exvivo-hemomatrix",
+  "SRC Ex-vivo HemoData": "/lab-tools/src-exvivo-hemodata",
 };
 
 const getLinkUrl = (link: string) => linkUrls[link] || "#";
@@ -75,7 +75,7 @@ const menuItems: { label: string; columns: { heading: string; links: MenuLink[] 
     columns: [
       {
         heading: "Calculators",
-        links: ["LabCalc Engine", "SRC Comparison", "SRC CBC"],
+        links: ["SRC Ex-vivo Spectra", "SRC Ex-vivo HemoMatrix", "SRC Ex-vivo HemoData"],
       },
     ],
   },

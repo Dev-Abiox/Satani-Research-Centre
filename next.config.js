@@ -17,9 +17,15 @@ const nextConfig = {
     // and not /index — avoids path-to-regexp ordering ambiguity and CDN
     // cache poisoning from an earlier buggy wildcard rule.
     return [
-      // LabCalc Engine moved to /lab-tools/labcalc-engine so all three lab
-      // tools share the consistent /lab-tools/<slug> URL pattern.
-      { source: "/lab-tools", destination: "/lab-tools/labcalc-engine", permanent: true },
+      // All three lab tools share the consistent /lab-tools/<slug> URL
+      // pattern. /lab-tools/ bare → the flagship "SRC Ex-vivo Spectra" tool.
+      { source: "/lab-tools", destination: "/lab-tools/src-exvivo-spectra", permanent: true },
+      // Legacy slugs (pre-rename) → new descriptive slugs. 308 so search
+      // engines transfer authority and old approval-email launch links
+      // still land on the right page.
+      { source: "/lab-tools/labcalc-engine", destination: "/lab-tools/src-exvivo-spectra", permanent: true },
+      { source: "/lab-tools/src-comparison", destination: "/lab-tools/src-exvivo-hemomatrix", permanent: true },
+      { source: "/lab-tools/src-cbc", destination: "/lab-tools/src-exvivo-hemodata", permanent: true },
       { source: "/index.html", destination: "/", permanent: true },
       { source: "/about.html", destination: "/about", permanent: true },
       { source: "/contact.html", destination: "/contact", permanent: true },

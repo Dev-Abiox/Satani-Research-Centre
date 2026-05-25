@@ -23,8 +23,8 @@ function errorMessage(
 }
 
 /**
- * Shared request-access page body for any lab tool. Rendered by both
- * /lab-tools (LabCalc Engine) and /lab-tools/[tool] (every other tool).
+ * Shared request-access page body for any lab tool. Rendered by
+ * /lab-tools/[tool] for every tool in the registry.
  */
 const SITE = "https://sataniresearchcentre.com";
 
@@ -48,12 +48,18 @@ export default function ToolAccessView({
         description: tool.seoDescription,
         url: `${SITE}${tool.page}`,
         applicationCategory: "BusinessApplication",
+        applicationSubCategory: "Laboratory calculation tool",
         operatingSystem: "Web browser",
+        browserRequirements: "Requires JavaScript. Modern evergreen browser.",
+        inLanguage: "en",
+        isAccessibleForFree: true,
+        keywords: tool.keywords.join(", "),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: {
           "@type": "Organization",
           name: "Satani Research Centre",
           url: SITE,
+          logo: `${SITE}/Logo.png`,
         },
       },
       {
@@ -63,6 +69,12 @@ export default function ToolAccessView({
           {
             "@type": "ListItem",
             position: 2,
+            name: "Lab Tools",
+            item: `${SITE}/lab-tools`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
             name: tool.name,
             item: `${SITE}${tool.page}`,
           },
