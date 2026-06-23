@@ -48,11 +48,15 @@ const PUBLICATIONS_JSONLD = [
   },
   {
     "@type": "ScholarlyArticle",
-    headline: "EEG-Based Evidence for Belief Coding Therapy in Treating Mental Disorders: A Cross-Sectional Interventional Study",
-    author: [{ "@type": "Person", name: "Abhijeet Satani" }],
-    datePublished: "2025-08-27",
-    isPartOf: { "@type": "Periodical", name: "Cureus" },
-    sameAs: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638",
+    headline: "Impact of Electromagnetic Fields on Circadian Rhythms: Molecular and Physiological Insights",
+    author: [
+      { "@type": "Person", name: "H.F. Tbahriti" },
+      { "@type": "Person", name: "Abhijeet Satani" },
+      { "@type": "Person", name: "M. Benbernou" },
+    ],
+    datePublished: "2026",
+    isPartOf: { "@type": "Periodical", name: "Sleep Biol. Rhythms", volumeNumber: "24" },
+    sameAs: "https://doi.org/10.1007/s41105-026-00643-x",
     publisher: { "@type": "Organization", name: "Satani Research Centre" },
   },
   {
@@ -127,6 +131,43 @@ const PUBLICATIONS_JSONLD = [
     ],
     datePublished: "2025",
     isPartOf: { "@type": "Periodical", name: "Neuroscience Research Journal" },
+    publisher: { "@type": "Organization", name: "Satani Research Centre" },
+  },
+  {
+    "@type": "ScholarlyArticle",
+    headline: "EEG-Based Evidence for Belief Coding Therapy in Treating Mental Disorders: A Cross-Sectional Interventional Study",
+    author: [{ "@type": "Person", name: "Abhijeet Satani" }],
+    datePublished: "2025-08-27",
+    isPartOf: { "@type": "Periodical", name: "Cureus" },
+    sameAs: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638",
+    publisher: { "@type": "Organization", name: "Satani Research Centre" },
+  },
+  {
+    "@type": "ScholarlyArticle",
+    headline: "Heart Arrhythmia Detection Using LabVIEW GUI-Based Approach",
+    author: [
+      { "@type": "Person", name: "Abhijeet Satani" },
+      { "@type": "Person", name: "D. Damodar" },
+      { "@type": "Person", name: "B. Satani" },
+    ],
+    datePublished: "2018",
+    isPartOf: { "@type": "Periodical", name: "IJATEE" },
+    sameAs: "http://dx.doi.org/10.19101/IJATEE.2018.547013",
+    publisher: { "@type": "Organization", name: "Satani Research Centre" },
+  },
+  {
+    "@type": "ScholarlyArticle",
+    headline: "An Exploratory Clinical Study of Structured Psychological Intervention for Menopausal Symptom Management",
+    author: [
+      { "@type": "Person", name: "E. Barwick" },
+      { "@type": "Person", name: "J. Cox" },
+      { "@type": "Person", name: "T. L. Wilson" },
+      { "@type": "Person", name: "V. Turner" },
+      { "@type": "Person", name: "A. Borah" },
+    ],
+    datePublished: "2026-04-20",
+    isPartOf: { "@type": "Periodical", name: "Cureus", volumeNumber: "18", issueNumber: "4" },
+    sameAs: "http://dx.doi.org/10.7759/cureus.107380",
     publisher: { "@type": "Organization", name: "Satani Research Centre" },
   },
 ];
@@ -236,16 +277,16 @@ export default function PublicationsPage() {
             {/* Publication 3 */}
             <div className="border-b border-neutral-100 pb-10">
               <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
-                3. EEG-Based Evidence for Belief Coding Therapy in Treating Mental Disorders: A Cross-Sectional Interventional Study
+                3. Impact of Electromagnetic Fields on Circadian Rhythms: Molecular and Physiological Insights
               </h3>
               <p className="text-[14px] text-neutral-500 mb-1">
-                Satani, A. (2025) Cureus | Published August 27, 2025
+                Tbahriti, H.F., Satani, A., Benbernou, M., et al. (2026) Sleep Biol. Rhythms 24, 195–214
               </p>
-              <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638" target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline mb-3 inline-block break-all">
-                https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638
+              <a href="https://doi.org/10.1007/s41105-026-00643-x" target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline mb-3 inline-block break-all">
+                https://doi.org/10.1007/s41105-026-00643-x
               </a>
               <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
-                This study presents EEG-based neurophysiological evidence for the efficacy of Belief Coding Therapy in treating anxiety and mental health disorders, establishing an objective neural basis for a novel therapeutic approach.
+                An investigation into how electromagnetic field exposure influences circadian regulation, sleep patterns, and biological timing systems, revealing potential interactions between modern environmental technologies and the body&apos;s internal clock.
               </p>
             </div>
 
@@ -302,7 +343,7 @@ export default function PublicationsPage() {
             </div>
 
             {/* Publication 8 */}
-            <div className="pb-4">
+            <div className="border-b border-neutral-100 pb-10">
               <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
                 8. Neural Correlates of Belief Coding: An EEG Study on Neurophysiological Changes in a Novel Therapeutic Approach
               </h3>
@@ -311,6 +352,54 @@ export default function PublicationsPage() {
               </p>
               <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
                 This paper maps the neurophysiological changes associated with Belief Coding therapy using EEG, providing objective neural correlates for a psychotherapeutic approach and contributing to the evidence base for non-pharmacological mental health interventions.
+              </p>
+            </div>
+
+            {/* Publication 9 */}
+            <div className="border-b border-neutral-100 pb-10">
+              <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
+                9. EEG-Based Evidence for Belief Coding Therapy in Treating Mental Disorders: A Cross-Sectional Interventional Study
+              </h3>
+              <p className="text-[14px] text-neutral-500 mb-1">
+                Satani, A. (2025) Cureus | Published August 27, 2025
+              </p>
+              <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638" target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline mb-3 inline-block break-all">
+                https://pmc.ncbi.nlm.nih.gov/articles/PMC12490638
+              </a>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
+                This study presents EEG-based neurophysiological evidence for the efficacy of Belief Coding Therapy in treating anxiety and mental health disorders, establishing an objective neural basis for a novel therapeutic approach.
+              </p>
+            </div>
+
+            {/* Publication 10 */}
+            <div className="border-b border-neutral-100 pb-10">
+              <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
+                10. Heart Arrhythmia Detection Using LabVIEW GUI-Based Approach
+              </h3>
+              <p className="text-[14px] text-neutral-500 mb-1">
+                Satani, A., Damodar, D., Satani, B. (2018) IJATEE | ISSN: 2394-5443
+              </p>
+              <a href="http://dx.doi.org/10.19101/IJATEE.2018.547013" target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline mb-3 inline-block break-all">
+                http://dx.doi.org/10.19101/IJATEE.2018.547013
+              </a>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
+                An investigation into the early detection of cardiac arrhythmias using electrocardiogram signals and a LabVIEW-based monitoring system, demonstrating how accessible diagnostic technologies can support the timely identification of heart rhythm abnormalities.
+              </p>
+            </div>
+
+            {/* Publication 11 */}
+            <div className="pb-4">
+              <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
+                11. An Exploratory Clinical Study of Structured Psychological Intervention for Menopausal Symptom Management
+              </h3>
+              <p className="text-[14px] text-neutral-500 mb-1">
+                Barwick E, Cox J, Wilson TL, Turner V, Borah A. Cureus. 2026 Apr 20;18(4):e107380.
+              </p>
+              <a href="http://dx.doi.org/10.7759/cureus.107380" target="_blank" rel="noopener noreferrer" className="text-[13px] text-accent hover:underline mb-3 inline-block break-all">
+                http://dx.doi.org/10.7759/cureus.107380
+              </a>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
+                An exploratory investigation into the effects of a structured psychological intervention on emotional regulation and cognitive well-being, providing insights into how non-pharmacological approaches may support improvements in mental health and quality of life.
               </p>
             </div>
           </div>
@@ -428,7 +517,7 @@ export default function PublicationsPage() {
             </div>
 
             {/* Preprint 3 */}
-            <div className="border-b border-neutral-100 pb-10">
+            <div className="pb-4">
               <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
                 3. Harnessing Belief Coding® to Address Modern Mental Disorders: A Neuropsychological Therapeutic Model
               </h3>
@@ -437,19 +526,6 @@ export default function PublicationsPage() {
               </p>
               <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
                 A neuropsychological framework for applying Belief Coding® to contemporary mental health disorders, presenting a novel therapeutic model grounded in neuroscience and validated through clinical observation.
-              </p>
-            </div>
-
-            {/* Preprint 4 */}
-            <div className="pb-4">
-              <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
-                4. The Application of Belief Coding® in Addressing Menopausal Symptoms: A Novel Therapeutic Approach
-              </h3>
-              <p className="text-[14px] text-neutral-500 mb-3">
-                Cox, J., Wilson, T. L., Barwick, E., &amp; Turner, V. (2025) bioRxiv: The Preprint Server for Biology
-              </p>
-              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
-                An exploration of Belief Coding® as a therapeutic intervention for menopausal symptoms, presenting preliminary findings and a novel framework for addressing hormonal and neurological aspects of menopause through non-pharmacological means.
               </p>
             </div>
           </div>
