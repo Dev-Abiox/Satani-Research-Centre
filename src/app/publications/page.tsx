@@ -444,7 +444,7 @@ export default function PublicationsPage() {
             </div>
 
             {/* Conference 2 — Arisa Foundation Unconference */}
-            <div className="pb-4">
+            <div className="border-b border-neutral-100 pb-10">
               <p className="text-[12px] font-semibold uppercase tracking-wider text-accent mb-2">
                 Arisa Foundation Unconference · 27–29 March 2026
               </p>
@@ -465,6 +465,31 @@ export default function PublicationsPage() {
               </p>
               <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7] mt-4">
                 Conclusively, this paper is a starting point for a more extensive debate regarding the types of environments that are effective in helping children to thrive. With evidence based on actual neural data, the session encourages participants to rethink technology, pedagogy, and creative practice by prioritising care, cognitive well-being, and the wisdom of embodied play.
+              </p>
+            </div>
+
+            {/* Conference 3 — Brain Informatics 2025 */}
+            <div className="pb-4">
+              <p className="text-[12px] font-semibold uppercase tracking-wider text-accent mb-2">
+                BI 2025 · Brain Informatics Conference
+              </p>
+              <h3 className="text-[20px] sm:text-[22px] font-bold text-neutral-900 leading-snug mb-2">
+                3. Virtual Reality vs. Real-World Learning: A Comprehensive Neurocognitive Analysis of Brain Activity and Cognitive Outcomes in Kinetic and Spatial Tasks
+              </h3>
+              <p className="text-[14px] text-neutral-500 mb-1">
+                Barodia, P., Satani, A., Joshi, H. D., Banavath, B., &amp; Thaker, K. (2026)
+              </p>
+              <p className="text-[14px] text-neutral-500 mb-4">
+                Lecture Notes in Artificial Intelligence (LNAI), Vol. 16348, Springer Nature
+              </p>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7]">
+                Virtual Reality (VR) has emerged as a promising platform for education, training, and cognitive rehabilitation; however, its influence on neural processing and learning outcomes relative to conventional and real-world environments remains incompletely understood. While immersive technologies can enhance engagement, the relationship between increased neural activation and effective knowledge acquisition requires further investigation. This study aimed to compare neurophysiological responses and cognitive performance during kinetic and spatial learning tasks across immersive VR, flat-screen desktop, and real-world environments.
+              </p>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7] mt-4">
+                Nine healthy adults completed pottery-based motor tasks and spatial reasoning exercises in all three learning conditions while brain activity was continuously recorded using a 24-channel electroencephalography (EEG) system. Neural signals underwent standardized preprocessing and spectral analysis to characterize changes in frequency-band activity associated with cognitive processing. Behavioral performance was assessed through psychometrically balanced post-task examinations to evaluate learning outcomes.
+              </p>
+              <p className="text-[15px] sm:text-[16px] text-neutral-600 leading-[1.7] mt-4">
+                Immersive VR elicited greater theta and alpha band activity, particularly within parietal and occipital regions, suggesting increased visual attention and cognitive workload during spatial tasks. In contrast, real-world motor tasks demonstrated stronger somatosensory integration and increased delta-band activity, reflecting richer sensorimotor feedback. Despite higher levels of neural activation in VR, participants achieved lower learning scores than in the flat-screen condition, indicating that increased cognitive engagement does not necessarily translate into improved knowledge retention. These findings contribute foundational EEG datasets for the development of neuroadaptive learning systems capable of dynamically adjusting educational content based on real-time cognitive state, advancing applications at the intersection of neuroscience, artificial intelligence, and immersive educational technology.
               </p>
             </div>
           </div>
