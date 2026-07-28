@@ -115,9 +115,12 @@ export default function BrainOnArtPage() {
 
   // Date Formatting Helpers
   const fmtDow = (dateStr: string) => {
-    const parts = dateStr.split("-");
-    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    return d.toLocaleDateString("en-US", { weekday: "short" });
+    const dowMap: Record<string, string> = {
+      "2026-08-03": "Mon", "2026-08-04": "Tue", "2026-08-05": "Wed", "2026-08-06": "Thu", "2026-08-07": "Fri",
+      "2026-08-10": "Mon", "2026-08-11": "Tue", "2026-08-12": "Wed", "2026-08-13": "Thu", "2026-08-14": "Fri",
+      "2026-08-15": "Sat", "2026-08-16": "Sun"
+    };
+    return dowMap[dateStr] || "";
   };
 
   const fmtDayNum = (dateStr: string) => {
@@ -125,9 +128,21 @@ export default function BrainOnArtPage() {
   };
 
   const fmtFull = (dateStr: string) => {
-    const parts = dateStr.split("-");
-    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    const fullMap: Record<string, string> = {
+      "2026-08-03": "Monday, August 3, 2026",
+      "2026-08-04": "Tuesday, August 4, 2026",
+      "2026-08-05": "Wednesday, August 5, 2026",
+      "2026-08-06": "Thursday, August 6, 2026",
+      "2026-08-07": "Friday, August 7, 2026",
+      "2026-08-10": "Monday, August 10, 2026",
+      "2026-08-11": "Tuesday, August 11, 2026",
+      "2026-08-12": "Wednesday, August 12, 2026",
+      "2026-08-13": "Thursday, August 13, 2026",
+      "2026-08-14": "Friday, August 14, 2026",
+      "2026-08-15": "Saturday, August 15, 2026",
+      "2026-08-16": "Sunday, August 16, 2026"
+    };
+    return fullMap[dateStr] || dateStr;
   };
 
   // Handlers
@@ -386,11 +401,11 @@ Phone: +91 72289 75105
                 A five-minute EEG session while you view a sequence of paintings. Quiet, comfortable, and over before you know it.
               </p>
               
-              <div className="flex gap-3.5 justify-center mt-8.5 flex-wrap">
-                <a href="#schedule" className="text-[14.5px] font-semibold px-6.5 py-3 rounded-full transition-all duration-250 bg-[#1D1D1F] text-white hover:bg-[#4B4FE0] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(75,79,224,0.5)] inline-flex items-center gap-2">
+              <div className="flex gap-3.5 justify-center mt-8 flex-wrap">
+                <a href="#schedule" className="text-[14.5px] font-semibold px-6 py-3 rounded-full transition-all duration-250 bg-[#1D1D1F] text-white hover:bg-[#4B4FE0] hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(75,79,224,0.5)] inline-flex items-center gap-2">
                   Reserve a time slot
                 </a>
-                <a href="#study" className="text-[14.5px] font-semibold px-6.5 py-3 rounded-full transition-all duration-250 bg-[#F5F5F7] text-[#1D1D1F] border border-[#D2D2D7] hover:bg-white hover:border-[#A1A1A6] inline-flex items-center gap-2">
+                <a href="#study" className="text-[14.5px] font-semibold px-6 py-3 rounded-full transition-all duration-250 bg-[#F5F5F7] text-[#1D1D1F] border border-[#D2D2D7] hover:bg-white hover:border-[#A1A1A6] inline-flex items-center gap-2">
                   Learn more
                 </a>
               </div>
@@ -557,32 +572,32 @@ Phone: +91 72289 75105
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[#E8E8ED] border border-[#E8E8ED] rounded-2xl overflow-hidden mt-14">
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-sm font-semibold">18–45</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-sm font-semibold">18–45</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Age range</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">Participants should be between 18 and 45 years old at the time of the session.</p>
                 </div>
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">👁</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">👁</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Normal vision</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">Normal or corrected-to-normal vision is required (glasses/lenses are fine). No color-blindness.</p>
                 </div>
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">🧠</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">🧠</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Neurological health</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">No diagnosed neurological/psychiatric conditions, and no history of epilepsy or seizures.</p>
                 </div>
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">💊</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">💊</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Medication</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">Not currently taking medications that materially affect the central nervous system activity.</p>
                 </div>
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">🎧</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">🎧</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Cap comfort</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">Comfortable wearing a snug EEG cap for around 15 minutes, including electrode setup.</p>
                 </div>
                 <div className="bg-white p-8">
-                  <div className="w-9.5 h-9.5 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">💇</div>
+                  <div className="w-10 h-10 rounded-lg bg-[#EEEEFC] flex items-center justify-center text-[#4B4FE0] mb-4 text-lg">💇</div>
                   <h4 className="font-semibold text-[15px] mb-2 text-[#1D1D1F]">Hair &amp; scalp</h4>
                   <p className="text-[13.5px] text-[#6E6E73] leading-relaxed">Please arrive with clean, product-free hair (no gel, wax, or oils) for reliable contact.</p>
                 </div>
@@ -708,7 +723,12 @@ Phone: +91 72289 75105
                         return (
                           <div 
                             key={date}
-                            onClick={() => { setSelectedDate(date); }}
+                            onClick={() => {
+                              setSelectedDate(date);
+                              setTimeout(() => {
+                                document.getElementById("slots-panel")?.scrollIntoView({ behavior: "smooth" });
+                              }, 50);
+                            }}
                             className={`border rounded-2xl p-4 text-center cursor-pointer transition-all duration-200 ease-out relative hover:-translate-y-0.5 ${
                               isSelected 
                                 ? "bg-[#1D1D1F] border-[#1D1D1F] text-white" 
@@ -731,7 +751,7 @@ Phone: +91 72289 75105
                   </div>
 
                   {/* SLOTS LIST PANEL */}
-                  <div className="border border-[#E8E8ED] rounded-[22px] p-7 bg-[#FBFBFD]">
+                  <div id="slots-panel" className="border border-[#E8E8ED] rounded-[22px] p-7 bg-[#FBFBFD] scroll-mt-28">
                     <div className="flex justify-between items-baseline flex-wrap gap-2.5 mb-5">
                       <h4 className="font-serif text-[19px] text-[#1D1D1F] font-normal">
                         {selectedDate ? fmtFull(selectedDate) : "Select a date above"}
@@ -1048,8 +1068,8 @@ Phone: +91 72289 75105
       {/* BOOKING MODAL */}
       {pendingBooking && (
         <div className="fixed inset-0 bg-[#1D1D1F]/45 backdrop-blur-sm z-[900] flex items-center justify-center p-5">
-          <div className="bg-white rounded-[22px] max-w-[460px] w-full p-8.5 max-h-[90vh] overflow-y-auto relative animate-[fadeIn_0.3s_ease-out] shadow-2xl">
-            <button className="absolute top-4.5 right-4.5 w-[30px] h-[30px] rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] flex items-center justify-center text-[#6E6E73] transition-colors" onClick={handleCloseModal}>
+          <div className="bg-white rounded-[22px] max-w-[460px] w-full p-8 max-h-[90vh] overflow-y-auto relative animate-[fadeIn_0.3s_ease-out] shadow-2xl">
+            <button className="absolute top-5 right-5 w-[30px] h-[30px] rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] flex items-center justify-center text-[#6E6E73] transition-colors" onClick={handleCloseModal}>
               ✕
             </button>
 
@@ -1080,7 +1100,7 @@ Phone: +91 72289 75105
                       placeholder="Jane Doe" 
                       value={formName}
                       onChange={(e) => setFormName(e.target.value)}
-                      className="w-full px-3.5 py-3 border border-[#D2D2D7] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] bg-[#FBFBFD] focus:bg-white transition-all"
+                      className="w-full px-4 py-3 border border-[#E8E8ED] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] focus:ring-1 focus:ring-[#4B4FE0] bg-white transition-all"
                     />
                   </div>
 
@@ -1093,7 +1113,7 @@ Phone: +91 72289 75105
                         placeholder="jane@email.com" 
                         value={formEmail}
                         onChange={(e) => setFormEmail(e.target.value)}
-                        className="w-full px-3.5 py-3 border border-[#D2D2D7] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] bg-[#FBFBFD] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 border border-[#E8E8ED] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] focus:ring-1 focus:ring-[#4B4FE0] bg-white transition-all"
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -1104,7 +1124,7 @@ Phone: +91 72289 75105
                         placeholder="+91 90000 00000" 
                         value={formPhone}
                         onChange={(e) => setFormPhone(e.target.value)}
-                        className="w-full px-3.5 py-3 border border-[#D2D2D7] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] bg-[#FBFBFD] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 border border-[#E8E8ED] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] focus:ring-1 focus:ring-[#4B4FE0] bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -1119,7 +1139,7 @@ Phone: +91 72289 75105
                       placeholder="e.g. 24" 
                       value={formAge}
                       onChange={(e) => setFormAge(e.target.value)}
-                      className="w-full px-3.5 py-3 border border-[#D2D2D7] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] bg-[#FBFBFD] focus:bg-white transition-all"
+                      className="w-full px-4 py-3 border border-[#E8E8ED] rounded-xl text-sm focus:outline-none focus:border-[#4B4FE0] focus:ring-1 focus:ring-[#4B4FE0] bg-white transition-all"
                     />
                   </div>
 
@@ -1152,7 +1172,7 @@ Phone: +91 72289 75105
               </>
             ) : (
               <div className="text-center py-2.5">
-                <div className="w-14 h-14 rounded-full bg-[#EEEEFC] text-[#4B4FE0] flex items-center justify-center mx-auto mb-4.5 text-2xl font-semibold">
+                <div className="w-14 h-14 rounded-full bg-[#EEEEFC] text-[#4B4FE0] flex items-center justify-center mx-auto mb-4 text-2xl font-semibold">
                   ✓
                 </div>
                 <h4 className="font-serif text-[21px] font-normal">You&apos;re booked</h4>
