@@ -11,6 +11,9 @@ import {
 import { sign } from "@/lib/lab-access/jwt";
 import { sendUserApproval, sendUserRejection } from "@/lib/lab-access/email";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const ADMIN_PASSWORD =
   process.env.ADMIN_PASSWORD || "SRC-eeg-art-study-2026-admin-auth-pass!";
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-do-not-use";

@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { deletePending, isApproved, savePending } from "@/lib/lab-access/storage";
+import { approve, deletePending, isApproved, savePending } from "@/lib/lab-access/storage";
 import { sign } from "@/lib/lab-access/jwt";
 import { sendOwnerDecisionRequest } from "@/lib/lab-access/email";
 import { isRateLimited } from "@/lib/lab-access/rate-limit";
 import { getTool } from "@/lib/lab-access/tools";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
@@ -80,7 +83,7 @@ export async function POST(req: Request) {
 
     // Optional environment flag to auto-approve requests instantly
     if (process.env.AUTO_APPROVE_LAB_ACCESS === "true") {
-      await import("@/lib/lab-access/storage").then((m) => m.approve(tool.storageKey, cleanEmail));
+      await approve(tool.storageKey, cleanEmail);
       const sessionToken = await sign(
         { kind: "session", tool: tool.slug, email: cleanEmail },
         null
