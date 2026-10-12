@@ -33,7 +33,17 @@ export type RevokePayload = {
   email: string;
 };
 
-export type AnyPayload = DecisionPayload | LaunchPayload | SessionPayload | RevokePayload;
+export type CaptchaPayload = {
+  kind: "captcha";
+  code: string;
+};
+
+export type AnyPayload =
+  | DecisionPayload
+  | LaunchPayload
+  | SessionPayload
+  | RevokePayload
+  | CaptchaPayload;
 
 export async function sign(payload: AnyPayload, expiresIn: string | null): Promise<string> {
   const jwt = new SignJWT({ ...payload })

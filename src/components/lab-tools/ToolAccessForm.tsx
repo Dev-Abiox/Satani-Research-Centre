@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error" | "redirecting";
 
@@ -14,13 +14,44 @@ type Props = {
 export default function ToolAccessForm({ toolSlug, toolName }: Props) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
+  const [captchaSvg, setCaptchaSvg] = useState<string>("");
+  const [captchaToken, setCaptchaToken] = useState<string>("");
+  const [captchaCode, setCaptchaCode] = useState<string>("");
+  const [captchaLoading, setCaptchaLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [redirectUrl, setRedirectUrl] = useState("");
   const [mountedAt] = useState(() => Date.now());
 
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
+
+  async function fetchCaptcha() {
+    setCaptchaLoading(true);
+    try {
+      const r = await fetch("/api/lab-access/captcha");
+      const data = await r.json();
+      if (data.success) {
+        setCaptchaSvg(data.svg);
+        setCaptchaToken(data.token);
+        setCaptchaCode("");
+      }
+    } catch (err) {
+      console.error("[lab-tools] Failed to load captcha:", err);
+    } finally {
+      setCaptchaLoading(false);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!captchaCode.trim()) {
+      setStatus("error");
+      setErrorMsg("Please enter the security verification code.");
+      return;
+    }
+
     setStatus("submitting");
     setErrorMsg("");
     try {
@@ -30,6 +61,8 @@ export default function ToolAccessForm({ toolSlug, toolName }: Props) {
         body: JSON.stringify({
           email,
           tool: toolSlug,
+          captchaCode: captchaCode.trim(),
+          captchaToken,
           _honeypot: honeypot,
           _timestamp: mountedAt,
         }),
@@ -38,6 +71,8 @@ export default function ToolAccessForm({ toolSlug, toolName }: Props) {
       if (!r.ok || !data.success) {
         setStatus("error");
         setErrorMsg(data.error || "Something went wrong. Please try again.");
+        // Refresh captcha on failure
+        fetchCaptcha();
         return;
       }
       // Already approved → server set cookie, redirect to the tool
@@ -51,6 +86,7 @@ export default function ToolAccessForm({ toolSlug, toolName }: Props) {
     } catch {
       setStatus("error");
       setErrorMsg("Network error. Please try again.");
+      fetchCaptcha();
     }
   }
 
@@ -105,6 +141,64 @@ export default function ToolAccessForm({ toolSlug, toolName }: Props) {
           placeholder="you@example.com"
           className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-[15px] focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
         />
+      </div>
+
+      {/* Security Verification (Captcha) */}
+      <div className="pt-1">
+        <label htmlFor="lab-captcha" className="block text-[14px] font-semibold text-neutral-800 mb-1">
+          Security verification
+        </label>
+        <p className="text-[13px] text-neutral-500 mb-2.5">
+          Enter the characters shown in the box below:
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div
+              className="bg-slate-50 rounded-lg overflow-hidden border border-slate-300 shadow-sm flex items-center justify-center min-w-[150px] min-h-[48px]"
+              dangerouslySetInnerHTML={{ __html: captchaSvg }}
+            />
+            <button
+              type="button"
+              onClick={fetchCaptcha}
+              disabled={captchaLoading}
+              title="Refresh security code"
+              className="p-3 text-neutral-600 hover:text-accent hover:bg-neutral-100 rounded-lg transition-colors border border-neutral-200"
+              aria-label="Generate new security code"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`w-5 h-5 ${captchaLoading ? "animate-spin text-accent" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div className="flex-1">
+            <input
+              id="lab-captcha"
+              type="text"
+              required
+              autoComplete="off"
+              autoCapitalize="characters"
+              spellCheck="false"
+              maxLength={6}
+              value={captchaCode}
+              onChange={(e) => setCaptchaCode(e.target.value.toUpperCase())}
+              placeholder="Enter code"
+              className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-[15px] font-mono tracking-widest uppercase focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+            />
+          </div>
+        </div>
       </div>
 
       {status === "error" && (

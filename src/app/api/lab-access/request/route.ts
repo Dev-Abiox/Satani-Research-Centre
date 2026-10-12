@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { approve, deletePending, isApproved, savePending } from "@/lib/lab-access/storage";
-import { sign } from "@/lib/lab-access/jwt";
+import { CaptchaPayload, sign, verify } from "@/lib/lab-access/jwt";
 import { sendOwnerDecisionRequest } from "@/lib/lab-access/email";
 import { isRateLimited } from "@/lib/lab-access/rate-limit";
 import { getTool } from "@/lib/lab-access/tools";
@@ -17,14 +17,47 @@ const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 10;
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, tool: toolSlug, _honeypot, _timestamp } = body || {};
+    const {
+      email,
+      tool: toolSlug,
+      captchaCode,
+      captchaToken,
+      _honeypot,
+      _timestamp,
+    } = body || {};
 
-    // Bot checks. The honeypot is the primary defense; the timestamp guard
-    // only rejects near-instant programmatic submits. Keep the window short —
-    // a real user can fill one email field and submit in well under 3s, and a
-    // false positive here silently drops a legitimate request.
+    // Bot checks
     if (_honeypot) return NextResponse.json({ success: true });
-    if (_timestamp && Date.now() - _timestamp < 1200) return NextResponse.json({ success: true });
+    if (_timestamp && Date.now() - _timestamp < 800) return NextResponse.json({ success: true });
+
+    // Captcha verification
+    if (!captchaToken || typeof captchaCode !== "string" || !captchaCode.trim()) {
+      return NextResponse.json(
+        { success: false, error: "Please enter the security verification code." },
+        { status: 400 }
+      );
+    }
+
+    const captchaPayload = await verify<CaptchaPayload>(captchaToken);
+    if (!captchaPayload || captchaPayload.kind !== "captcha") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Security code expired. Please refresh the code and try again.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (captchaPayload.code.toLowerCase() !== captchaCode.trim().toLowerCase()) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Incorrect security code. Please check the image and try again.",
+        },
+        { status: 400 }
+      );
+    }
 
     // Resolve which tool this request is for
     const tool = getTool(typeof toolSlug === "string" ? toolSlug : null);
