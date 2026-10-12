@@ -9,13 +9,21 @@ for (const key of REQUIRED_SMTP_VARS) {
   }
 }
 
+const port = Number(process.env.SMTP_PORT?.trim()) || 465;
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: true,
+  host: (process.env.SMTP_HOST || "smtp.hostinger.com").trim().replace(/^["']|["']$/g, ""),
+  port,
+  secure: port === 465,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: (process.env.SMTP_USER || "").trim().replace(/^["']|["']$/g, ""),
+    pass: (process.env.SMTP_PASS || "").trim().replace(/^["']|["']$/g, ""),
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
+  tls: {
+    rejectUnauthorized: false,
+    minVersion: "TLSv1.2",
   },
 });
 

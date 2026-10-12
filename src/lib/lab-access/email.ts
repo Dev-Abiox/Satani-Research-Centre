@@ -1,17 +1,5 @@
 import nodemailer from "nodemailer";
 
-const REQUIRED = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"] as const;
-for (const key of REQUIRED) {
-  if (!process.env[key]) throw new Error(`[lab-access] Missing env var: ${key}`);
-}
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: true,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-});
-
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -21,12 +9,42 @@ function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-const FROM = `"Satani Research Centre" <${process.env.SMTP_USER}>`;
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+function getSiteUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://sataniresearchcentre.com")
+  );
+}
 
-// All tools share the single /lab-tools/launch endpoint — the tool is resolved
-// from the JWT inside the launch token.
-const LAUNCH_ENDPOINT = `${SITE}/lab-tools/launch`;
+function getFromAddress(): string {
+  const user = (process.env.SMTP_USER || "connect@sataniresearchcentre.com")
+    .trim()
+    .replace(/^["']|["']$/g, "");
+  return `"Satani Research Centre" <${user}>`;
+}
+
+export function getTransporter() {
+  const host = (process.env.SMTP_HOST || "smtp.hostinger.com").trim().replace(/^["']|["']$/g, "");
+  const port = Number(process.env.SMTP_PORT?.trim()) || 465;
+  const user = (process.env.SMTP_USER || "").trim().replace(/^["']|["']$/g, "");
+  const pass = (process.env.SMTP_PASS || "").trim().replace(/^["']|["']$/g, "");
+
+  const secure = port === 465;
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: user && pass ? { user, pass } : undefined,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+    tls: {
+      rejectUnauthorized: false,
+      minVersion: "TLSv1.2",
+    },
+  });
+}
 
 export async function sendOwnerDecisionRequest(args: {
   to: string;
@@ -35,14 +53,18 @@ export async function sendOwnerDecisionRequest(args: {
   approveToken: string;
   denyToken: string;
 }): Promise<void> {
-  const approveUrl = `${SITE}/api/lab-access/decide?token=${args.approveToken}`;
-  const denyUrl = `${SITE}/api/lab-access/decide?token=${args.denyToken}`;
+  const site = getSiteUrl();
+  const approveUrl = `${site}/api/lab-access/decide?token=${args.approveToken}`;
+  const denyUrl = `${site}/api/lab-access/decide?token=${args.denyToken}`;
   const safeEmail = escapeHtml(args.userEmail);
   const safeTool = escapeHtml(args.toolName);
 
+  const transporter = getTransporter();
+  const recipient = args.to?.trim() || process.env.SMTP_USER?.trim() || "connect@sataniresearchcentre.com";
+
   await transporter.sendMail({
-    from: FROM,
-    to: args.to,
+    from: getFromAddress(),
+    to: recipient,
     subject: `${args.toolName} access request — ${args.userEmail}`,
     html: `
       <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px">
@@ -68,15 +90,19 @@ export async function sendUserApproval(args: {
   revokeToken: string;
   ownerEmail: string;
 }): Promise<void> {
-  const launchUrl = `${LAUNCH_ENDPOINT}?token=${args.launchToken}`;
-  const revokeUrl = `${SITE}/api/lab-access/revoke?token=${args.revokeToken}`;
-  const toolPageUrl = `${SITE}${args.toolPath}`;
+  const site = getSiteUrl();
+  const launchUrl = `${site}/lab-tools/launch?token=${args.launchToken}`;
+  const revokeUrl = `${site}/api/lab-access/revoke?token=${args.revokeToken}`;
+  const toolPageUrl = `${site}${args.toolPath}`;
   const safeEmail = escapeHtml(args.to);
   const safeTool = escapeHtml(args.toolName);
 
+  const transporter = getTransporter();
+  const ownerRecipient = args.ownerEmail?.trim() || process.env.SMTP_USER?.trim() || "connect@sataniresearchcentre.com";
+
   // Notify the user with a one-click launch link
   await transporter.sendMail({
-    from: FROM,
+    from: getFromAddress(),
     to: args.to,
     subject: `Your ${args.toolName} access is approved`,
     html: `
@@ -93,21 +119,25 @@ export async function sendUserApproval(args: {
   });
 
   // Send confirmation + revoke link to owner — keep this email for revoke later
-  await transporter.sendMail({
-    from: FROM,
-    to: args.ownerEmail,
-    subject: `Approved: ${args.to} — ${args.toolName}`,
-    html: `
-      <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px">
-        <h2 style="margin-top:0">✅ Approved ${safeEmail}</h2>
-        <p>This user has been granted ${safeTool} access and notified by email.</p>
-        <p style="margin-top:24px">If you ever need to revoke their access, click below. <strong>Save this email</strong> — the link never expires.</p>
-        <p style="margin:16px 0">
-          <a href="${revokeUrl}" style="display:inline-block;padding:10px 20px;background:#cc0000;color:#fff;text-decoration:none;border-radius:6px;font-weight:600">Revoke ${safeEmail} (${safeTool})</a>
-        </p>
-      </div>
-    `,
-  });
+  try {
+    await transporter.sendMail({
+      from: getFromAddress(),
+      to: ownerRecipient,
+      subject: `Approved: ${args.to} — ${args.toolName}`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px">
+          <h2 style="margin-top:0">✅ Approved ${safeEmail}</h2>
+          <p>This user has been granted ${safeTool} access and notified by email.</p>
+          <p style="margin-top:24px">If you ever need to revoke their access, click below. <strong>Save this email</strong> — the link never expires.</p>
+          <p style="margin:16px 0">
+            <a href="${revokeUrl}" style="display:inline-block;padding:10px 20px;background:#cc0000;color:#fff;text-decoration:none;border-radius:6px;font-weight:600">Revoke ${safeEmail} (${safeTool})</a>
+          </p>
+        </div>
+      `,
+    });
+  } catch (ownerErr) {
+    console.error("[lab-access/email] Failed to send owner confirmation:", ownerErr);
+  }
 }
 
 export async function sendUserRejection(args: {
@@ -115,16 +145,20 @@ export async function sendUserRejection(args: {
   toolName: string;
 }): Promise<void> {
   const safeTool = escapeHtml(args.toolName);
+  const transporter = getTransporter();
+  const contactEmail = process.env.SMTP_USER?.trim() || "connect@sataniresearchcentre.com";
+
   await transporter.sendMail({
-    from: FROM,
+    from: getFromAddress(),
     to: args.to,
     subject: `Your ${args.toolName} access request`,
     html: `
       <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px">
         <h2 style="margin-top:0">Access request update</h2>
         <p>Thank you for your interest in ${safeTool}. Unfortunately, your access request has not been approved at this time.</p>
-        <p>If you have questions, please contact us at <a href="mailto:${process.env.SMTP_USER}">${process.env.SMTP_USER}</a>.</p>
+        <p>If you have questions, please contact us at <a href="mailto:${contactEmail}">${contactEmail}</a>.</p>
       </div>
     `,
   });
 }
+

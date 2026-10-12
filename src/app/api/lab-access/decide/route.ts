@@ -4,7 +4,10 @@ import { sign, verify, DecisionPayload } from "@/lib/lab-access/jwt";
 import { sendUserApproval, sendUserRejection } from "@/lib/lab-access/email";
 import { getToolOrDefault } from "@/lib/lab-access/tools";
 
-const ADMIN_EMAIL = process.env.LAB_ACCESS_ADMIN_EMAIL || process.env.SMTP_USER!;
+const ADMIN_EMAIL =
+  process.env.LAB_ACCESS_ADMIN_EMAIL?.trim() ||
+  process.env.SMTP_USER?.trim() ||
+  "connect@sataniresearchcentre.com";
 
 function htmlPage(title: string, body: string): Response {
   return new NextResponse(

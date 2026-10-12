@@ -18,6 +18,7 @@ const PENDING_TTL_SECONDS = 48 * 60 * 60;
 const approvedSetKey = (storageKey: string) => `${storageKey}:approved`;
 const pendingItemKey = (storageKey: string, requestId: string) =>
   `${storageKey}:pending:${requestId}`;
+const pendingSetKey = (storageKey: string) => `${storageKey}:pending_ids`;
 
 const VERBOSE = process.env.NODE_ENV !== "production";
 function vlog(...args: unknown[]): void {
@@ -95,6 +96,7 @@ export async function savePending(
   const lower = email.toLowerCase();
   if (redis) {
     await redis.set(pendingItemKey(storageKey, requestId), lower, { ex: PENDING_TTL_SECONDS });
+    await redis.sadd(pendingSetKey(storageKey), requestId);
   } else {
     const data = fileLoad();
     fileTool(data, storageKey).pending[requestId] = { email: lower, createdAt: Date.now() };
@@ -106,6 +108,7 @@ export async function savePending(
 export async function deletePending(storageKey: string, requestId: string): Promise<void> {
   if (redis) {
     await redis.del(pendingItemKey(storageKey, requestId));
+    await redis.srem(pendingSetKey(storageKey), requestId);
   } else {
     const data = fileLoad();
     const tool = data[storageKey];
@@ -124,6 +127,7 @@ export async function consumePending(
     const email = await redis.get<string>(pendingItemKey(storageKey, requestId));
     if (!email) return null;
     await redis.del(pendingItemKey(storageKey, requestId));
+    await redis.srem(pendingSetKey(storageKey), requestId);
     vlog(`[lab-access] pending consumed: ${email} (${storageKey})`);
     return email;
   }
@@ -138,6 +142,41 @@ export async function consumePending(
   }
   fileSave(data);
   return entry.email;
+}
+
+export async function listPending(
+  storageKey: string
+): Promise<Array<{ requestId: string; email: string }>> {
+  if (redis) {
+    const ids = await redis.smembers(pendingSetKey(storageKey));
+    if (!ids || ids.length === 0) return [];
+    const results: Array<{ requestId: string; email: string }> = [];
+    for (const id of ids) {
+      const email = await redis.get<string>(pendingItemKey(storageKey, String(id)));
+      if (email) {
+        results.push({ requestId: String(id), email });
+      } else {
+        await redis.srem(pendingSetKey(storageKey), String(id));
+      }
+    }
+    return results;
+  }
+  const data = fileLoad();
+  const tool = data[storageKey];
+  if (!tool) return [];
+  const now = Date.now();
+  return Object.entries(tool.pending)
+    .filter(([_, entry]) => now - entry.createdAt <= PENDING_TTL_MS)
+    .map(([requestId, entry]) => ({ requestId, email: entry.email }));
+}
+
+export async function listApproved(storageKey: string): Promise<string[]> {
+  if (redis) {
+    const members = await redis.smembers(approvedSetKey(storageKey));
+    return (members || []).map((m) => String(m).toLowerCase());
+  }
+  const data = fileLoad();
+  return data[storageKey]?.approved || [];
 }
 
 export async function approve(storageKey: string, email: string): Promise<void> {

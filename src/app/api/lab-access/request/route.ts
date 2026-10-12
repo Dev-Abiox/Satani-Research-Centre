@@ -8,8 +8,6 @@ import { getTool } from "@/lib/lab-access/tools";
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
-const ADMIN_EMAIL = process.env.LAB_ACCESS_ADMIN_EMAIL || process.env.SMTP_USER!;
-
 // ~10 years; browsers will silently cap to ~400 days but intent is "until revoked"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 10;
 
@@ -80,7 +78,37 @@ export async function POST(req: Request) {
       return res;
     }
 
-    // New request → save + email owner with approve/deny links
+    // Optional environment flag to auto-approve requests instantly
+    if (process.env.AUTO_APPROVE_LAB_ACCESS === "true") {
+      await import("@/lib/lab-access/storage").then((m) => m.approve(tool.storageKey, cleanEmail));
+      const sessionToken = await sign(
+        { kind: "session", tool: tool.slug, email: cleanEmail },
+        null
+      );
+      const accessToken = await sign(
+        { kind: "launch", tool: tool.slug, email: cleanEmail },
+        "8h"
+      );
+      const dest = new URL(tool.url);
+      dest.searchParams.set("access", accessToken);
+      const res = NextResponse.json({
+        success: true,
+        approved: true,
+        redirectUrl: dest.toString(),
+      });
+      res.cookies.set({
+        name: tool.cookieName,
+        value: sessionToken,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/lab-tools",
+        maxAge: COOKIE_MAX_AGE,
+      });
+      return res;
+    }
+
+    // New request → save to persistent pending storage
     const requestId = randomUUID();
     await savePending(tool.storageKey, requestId, cleanEmail);
 
@@ -93,22 +121,30 @@ export async function POST(req: Request) {
       "48h"
     );
 
+    const site =
+      process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://sataniresearchcentre.com");
+    const approveUrl = `${site}/api/lab-access/decide?token=${approveToken}`;
+
+    const adminEmail =
+      process.env.LAB_ACCESS_ADMIN_EMAIL?.trim() ||
+      process.env.SMTP_USER?.trim() ||
+      "connect@sataniresearchcentre.com";
+
+    // Attempt to email owner with approve/deny links
     try {
       await sendOwnerDecisionRequest({
-        to: ADMIN_EMAIL,
+        to: adminEmail,
         userEmail: cleanEmail,
         toolName: tool.name,
         approveToken,
         denyToken,
       });
     } catch (emailErr) {
-      // Roll back the pending entry so user can retry without creating duplicates
-      await deletePending(tool.storageKey, requestId);
-      console.error("[lab-access/request] owner email failed, rolled back pending:", emailErr);
-      return NextResponse.json(
-        { success: false, error: "Could not send request. Please try again in a few minutes." },
-        { status: 502 }
-      );
+      // Do NOT delete the pending entry. The user request has been registered
+      // successfully in storage and can be approved by the admin via dashboard or direct link.
+      console.error("[lab-access/request] owner email notification failed (request preserved in pending):", emailErr);
+      console.log(`[lab-access] Manual approve URL for ${cleanEmail} (${tool.name}): ${approveUrl}`);
     }
 
     return NextResponse.json({ success: true });
